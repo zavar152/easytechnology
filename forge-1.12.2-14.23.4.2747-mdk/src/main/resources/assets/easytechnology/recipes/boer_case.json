@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "GI ",
+        "GG "
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:wool",
+            "data": 5
+        },
+        "I": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "easytechnology:boer_case",
+        "count": 1
+    }
+}
