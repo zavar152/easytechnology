@@ -4,3 +4,5 @@ item.boer_case.name=Корпус бура
 item.boer.name=Бур
 itemGroup.ETtab=EasyTechnology
 tile.seed_block.name=Блок-семька
+item.golden_pack.name=Кулёк золотых семек
+item.simple_pack.name=Кулёк семек

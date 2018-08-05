@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "easytechnology:items/golden_pack"
+		"layer0": "easytechnology:items/pack"
 	}
-} 
+}   

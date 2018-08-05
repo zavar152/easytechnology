@@ -28,7 +28,7 @@ public class ETItems
   {
 	  seed = new SeedItem("seed", 1, 1, false).setCreativeTab(EasyTechnology.tab);
 	  seed_golden = new SeedItem("seed_golden", 3, 5, false).setCreativeTab(EasyTechnology.tab);
-	  pack = new SeedItem("pack", 5, 5, false).setCreativeTab(EasyTechnology.tab);
+	  pack = new SeedItem("simple_pack", 5, 5, false).setCreativeTab(EasyTechnology.tab);
 	  golden_pack = new SeedItem("golden_pack", 7, 7, false).setCreativeTab(EasyTechnology.tab).setEffect(21, 3000, 10);
 	  boer_main = new SimpleItem("boer_main").setCreativeTab(EasyTechnology.tab);
 	  boer_case = new SimpleItem("boer_case").setCreativeTab(EasyTechnology.tab);

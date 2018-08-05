@@ -14,7 +14,7 @@ import zavar30.easytechnology.proxy.CommonProxy;
 public class EasyTechnology
 {
   @Instance("easytechnology")
-  public static EasyTechnology instance; 
+  public static EasyTechnology instance;  
 	
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
   public static CommonProxy proxy;
