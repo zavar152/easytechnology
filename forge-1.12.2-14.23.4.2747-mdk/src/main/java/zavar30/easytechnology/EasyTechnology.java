@@ -26,7 +26,6 @@ public class EasyTechnology
     proxy.preInit(event);
     ETBlocks.load();
     ETItems.load();
-    ETRecipes.load();
     ETMobs.load();
   }
   
@@ -35,6 +34,7 @@ public class EasyTechnology
   {
     System.out.println("EasyTechnology Mod INIT");
     proxy.init(event);
+    ETRecipes.load();
   }
   
   @Mod.EventHandler
