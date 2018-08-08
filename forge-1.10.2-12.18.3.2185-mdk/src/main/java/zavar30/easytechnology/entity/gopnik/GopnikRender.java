@@ -3,11 +3,10 @@ package zavar30.easytechnology.entity.gopnik;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import zavar30.easytechnology.Constants;
 
 public class GopnikRender extends RenderLiving<Gopnik>
 {
-	public static final ResourceLocation textures = new ResourceLocation("easytechnology:textures/entity/gopnik.png");
-	
 	public GopnikRender(RenderManager rendermanagerIn) 
 	{
 		super(rendermanagerIn, new ModelGopnik(), 1.5F);
@@ -16,7 +15,7 @@ public class GopnikRender extends RenderLiving<Gopnik>
 	@Override
 	protected ResourceLocation getEntityTexture(Gopnik entity) 
 	{
-		return textures;
+		return Constants.GOPNIK;
 	}
 	
 	@Override

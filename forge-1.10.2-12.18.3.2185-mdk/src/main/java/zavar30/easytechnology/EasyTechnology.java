@@ -14,7 +14,7 @@ import zavar30.easytechnology.proxy.CommonProxy;
 @Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.10.2]")
 public class EasyTechnology
 {
-  @Instance("easytechnology")
+  @Instance(Constants.MODID)
   public static EasyTechnology instance;
 	
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
@@ -23,7 +23,6 @@ public class EasyTechnology
   @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event)
   {
-    System.out.println("EasyTechnology Mod PRE-INIT");
     proxy.preInit(event);
     ETBlocks.load();
     ETItems.load();
@@ -33,7 +32,6 @@ public class EasyTechnology
   @Mod.EventHandler
   public void init(FMLInitializationEvent event)
   {
-    System.out.println("EasyTechnology Mod INIT");
     proxy.init(event);
     ETRecipes.load();
   }
@@ -41,8 +39,8 @@ public class EasyTechnology
   @Mod.EventHandler
   public void postInit(FMLPostInitializationEvent event)
   {
-    System.out.println("EasyTechnology Mod POST-INIT");
     proxy.postInit(event);
+    System.out.println("ET is ready!");
   }
   
   public static CreativeTabs tab = new CreativeTabs("ETtab")

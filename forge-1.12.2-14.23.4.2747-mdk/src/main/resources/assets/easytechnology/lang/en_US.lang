@@ -1,0 +1,11 @@
+﻿
+item.boer_main.name=Boer
+item.boer_case.name=Case of boer
+item.boer.name=Boer Tool
+itemGroup.ETtab=EasyTechnology
+tile.seed_block.name=Seed block
+item.golden_pack.name=Pack of golden seeds
+item.simple_pack.name=Pack of seeds
+item.seed.name=Seed
+item.seed_golden.name=Golden seed
+entity.gopnik.name=Gopnik Kolya

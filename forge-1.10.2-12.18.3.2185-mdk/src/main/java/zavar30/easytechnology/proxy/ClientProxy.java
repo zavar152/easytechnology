@@ -6,6 +6,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import zavar30.easytechnology.Constants;
 import zavar30.easytechnology.ETMobs;
 
 public class ClientProxy extends CommonProxy
@@ -28,7 +29,7 @@ public void postInit(FMLPostInitializationEvent event)
 
 public void registerItemRenderer(Item item, int meta, String id)
 {
-  ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation("easytechnology:" + id, "inventory"));
+  ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Constants.MODID + ":" + id, "inventory"));
 }
 }
 
