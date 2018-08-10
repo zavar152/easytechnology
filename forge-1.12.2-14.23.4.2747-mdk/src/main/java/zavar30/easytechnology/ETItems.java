@@ -8,6 +8,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 import zavar30.easytechnology.items.BoerItem;
+import zavar30.easytechnology.items.BoerylliumAxeItem;
+import zavar30.easytechnology.items.BoerylliumPickaxeItem;
+import zavar30.easytechnology.items.BoerylliumSpadeItem;
+import zavar30.easytechnology.items.BoerylliumSwordItem;
 import zavar30.easytechnology.items.SeedItem;
 import zavar30.easytechnology.items.SimpleItem;
 
@@ -16,12 +20,20 @@ public class ETItems
   public static SimpleItem boer_case;
   public static BoerItem boer;
   public static SimpleItem boer_main;
+  public static SimpleItem boeryllium_ingot;
+  public static SimpleItem boeryllium_ingot_raw;
+  public static SimpleItem boer_controller;
   public static SeedItem seed;
   public static SeedItem seed_golden;
   public static SeedItem pack;
   public static SeedItem golden_pack;
-  private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {});//(new Block[] {Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE});
+  public static BoerylliumPickaxeItem pickaxe;
+  public static BoerylliumSwordItem sword;
+  public static BoerylliumSpadeItem spade;
+  public static BoerylliumAxeItem axe;
+  private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {});
   private static ToolMaterial boerToolMaterial = EnumHelper.addToolMaterial("BOER", 3, 1000, 15.0F, 0.0F, 0);
+  private static ToolMaterial boerylliumToolMaterial = EnumHelper.addToolMaterial("boeryllium", 3, 500, 10.0F, 7.0F, 5);
   
   public static void load()
   {
@@ -32,5 +44,12 @@ public class ETItems
 	  boer_main = new SimpleItem("boer_main").setCreativeTab(EasyTechnology.tab);
 	  boer_case = new SimpleItem("boer_case").setCreativeTab(EasyTechnology.tab);
 	  boer = new BoerItem(-1.0F, -1.0F, boerToolMaterial, EFFECTIVE_ON, "boer").setCreativeTab(EasyTechnology.tab);
+	  boeryllium_ingot = new SimpleItem("boeryllium_ingot").setCreativeTab(EasyTechnology.tab);
+	  boeryllium_ingot_raw = new SimpleItem("boeryllium_ingot_raw").setCreativeTab(EasyTechnology.tab);
+	  boer_controller = new SimpleItem("boer_controller").setCreativeTab(EasyTechnology.tab);
+	  pickaxe = new BoerylliumPickaxeItem(boerylliumToolMaterial, "boeryllium_pickaxe").setCreativeTab(EasyTechnology.tab);
+	  sword = new BoerylliumSwordItem(boerylliumToolMaterial, "boeryllium_sword").setCreativeTab(EasyTechnology.tab);
+	  spade = new BoerylliumSpadeItem(boerylliumToolMaterial, "boeryllium_spade").setCreativeTab(EasyTechnology.tab);
+	  axe = new BoerylliumAxeItem(boerylliumToolMaterial, "boeryllium_axe").setCreativeTab(EasyTechnology.tab);
   }
 }

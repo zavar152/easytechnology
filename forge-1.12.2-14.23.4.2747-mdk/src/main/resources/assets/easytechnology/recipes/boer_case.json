@@ -1,9 +1,9 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "   ",
-        "GI ",
-        "GG "
+        "GIG",
+        "ICI",
+        "GIG"
     ],
     "key": {
         "G": {
@@ -11,7 +11,10 @@
             "data": 5
         },
         "I": {
-            "item": "minecraft:iron_ingot"
+            "item": "easytechnology:boeryllium_ingot"
+        },
+        "C": {
+            "item": "easytechnology:boer_controller"
         }
     },
     "result": {
