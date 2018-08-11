@@ -46,7 +46,7 @@ public class BoerItem extends ItemTool
 	  this.setMaxDamage(material.getMaxUses());
 	  this.setMaxStackSize(1);
 	  this.attackSpeed = attackSpeed;
-	  this.attackDamage = attackDamage;
+	  this.attackDamage = attackDamage; 
 	  registerItem(name);
 	}
 

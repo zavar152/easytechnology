@@ -12,8 +12,8 @@ public class ETBlocks
 	
 	public static void load()
 	{
-		seed_block = new SeedBlock("seed_block").setCreativeTab(EasyTechnology.tab);
 		boery_ore = new BoerylliumOreBlock("boeryllium_ore_block").setCreativeTab(EasyTechnology.tab);
 		boery_block = new BoerylliumBlock("boeryllium_block").setCreativeTab(EasyTechnology.tab);
-	}
+		seed_block = new SeedBlock("seed_block").setCreativeTab(EasyTechnology.tab);
+	} 
 }

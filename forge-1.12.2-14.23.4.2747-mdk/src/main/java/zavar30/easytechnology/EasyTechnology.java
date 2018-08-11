@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import zavar30.easytechnology.proxy.CommonProxy;
 
 @Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.12.2]")
@@ -24,10 +23,10 @@ public class EasyTechnology
   public void preInit(FMLPreInitializationEvent event)
   {
     proxy.preInit(event);
-    ETBlocks.load();
     ETItems.load();
+    ETBlocks.load(); 
     ETMobs.load();
-    GameRegistry.registerWorldGenerator(new ETGenerator(), 3);
+    ETGenerator.load();
   }
   
   @Mod.EventHandler

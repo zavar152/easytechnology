@@ -9,6 +9,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ETGenerator implements IWorldGenerator
 {
@@ -20,7 +21,7 @@ public class ETGenerator implements IWorldGenerator
 		{
 			generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 		}
-	}
+	} 
 	
 	private void generateOverworld(Random random, int chunkX, int chunkY, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) 
 	{
@@ -33,9 +34,12 @@ public class ETGenerator implements IWorldGenerator
 		for (int i = 0; i < chances; i++) 
 		{
 			BlockPos pos = new BlockPos(x + random.nextInt(16), minY + random.nextInt(deltaY), z + random.nextInt(16));
-	
 			WorldGenMinable generator = new WorldGenMinable(ore, size);
 			generator.generate(world, random, pos);
 		}
+	}
+	public static void load()
+	{
+	    GameRegistry.registerWorldGenerator(new ETGenerator(), 3);
 	}
 }
