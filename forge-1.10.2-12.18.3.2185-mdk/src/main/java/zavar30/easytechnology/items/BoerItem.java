@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -19,6 +20,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import zavar30.easytechnology.EasyTechnology;
@@ -26,19 +29,24 @@ import zavar30.easytechnology.EasyTechnology;
 public class BoerItem extends ItemTool
 {
 
+	private Material[] m = {Material.ROCK, Material.ANVIL, Material.CORAL, Material.GROUND, Material.CLAY, Material.GRASS, Material.IRON, Material.SAND, Material.SNOW, Material.PISTON, Material.CIRCUITS, Material.CRAFTED_SNOW, Material.DRAGON_EGG};
+	private float e;
+	private ITextComponent tct = new TextComponentTranslation("boer.info.text", "dank");
+	
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public BoerItem(float attackDamage, float attackSpeed, ToolMaterial material, Set effectiveBlocks, String name)
 {
   super(attackDamage, attackSpeed, material, effectiveBlocks);
-  setRegistryName(name);
-  setUnlocalizedName(name);
-  setHarvestLevel("shovel", material.getHarvestLevel());
-  setHarvestLevel("pickaxe", material.getHarvestLevel());
-  efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial();
-  setMaxDamage(material.getMaxUses());
-  setMaxStackSize(1);
+  this.setRegistryName(name);
+  this.setUnlocalizedName(name);
+  this.setHarvestLevel("shovel", material.getHarvestLevel());
+  this.setHarvestLevel("pickaxe", material.getHarvestLevel());
+  this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial();
+  e = material.getEfficiencyOnProperMaterial();
+  this.setMaxDamage(material.getMaxUses());
+  this.setMaxStackSize(1);
   this.attackSpeed = attackSpeed;
-  damageVsEntity = attackDamage;
+  this.damageVsEntity = attackDamage;
   registerItem(name);
 }
 
@@ -52,7 +60,7 @@ public BoerItem setCreativeTab(CreativeTabs tab)
 @Override
 public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
 {
-  tooltip.add("Energy: " + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage());
+	tooltip.add(tct.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage());
   super.addInformation(stack, playerIn, tooltip, advanced);
 }
 
@@ -76,6 +84,13 @@ public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, 
 }
 
 @Override
+public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) 
+{
+	stack.setItemDamage(stack.getMaxDamage() - 1);
+	super.onCreated(stack, worldIn, playerIn);
+}
+
+@Override
 public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
 {
   if (isSelected) {
@@ -85,7 +100,7 @@ public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSl
     } 
     else 
     {
-      this.efficiencyOnProperMaterial = 15.0F;
+      this.efficiencyOnProperMaterial = e;
     }
   }
   super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
@@ -94,6 +109,19 @@ public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSl
 protected boolean isCoal(@Nullable ItemStack stack)
 {
   return (stack != null) && ((stack.getItem() instanceof ItemCoal));
+}
+
+@Override
+public float getStrVsBlock(ItemStack stack, IBlockState state) 
+{
+  for(int k = 0; k <= 3; k++)
+  {
+	if(state.getMaterial() == m[k] | state.getBlock().isToolEffective("shovel", state) | state.getBlock().isToolEffective("pickaxe", state))
+	{
+		return this.efficiencyOnProperMaterial;
+	}
+	}
+  return 1.0F;
 }
 
 @Override
@@ -111,7 +139,7 @@ public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state,
       {
         for (int i1 = i + 1; i1 >= i - 1; i1--) {
           for (int k1 = k + 1; k1 >= k - 1; k1--) {
-            if (!Block.isEqualTo(world.getBlockState(new BlockPos(i1, j, k1)).getBlock(), Blocks.BEDROCK))
+            if (!Block.isEqualTo(world.getBlockState(new BlockPos(i1, j, k1)).getBlock(), Blocks.BEDROCK) && stack.getStrVsBlock(world.getBlockState(new BlockPos(i1, j, k1))) != 1.0F)
             {
               world.getBlockState(new BlockPos(i1, j, k1)).getBlock().dropBlockAsItem(world, new BlockPos(i1, j, k1), world.getBlockState(new BlockPos(i1, j, k1)), 1);
               world.setBlockToAir(new BlockPos(i1, j, k1));
@@ -123,7 +151,7 @@ public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state,
       {
             for (int j1 = j + 1; j1 >= j - 1; j1--) {
               for (int k1 = k + 1; k1 >= k - 1; k1--) {
-                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i, j1, k1)).getBlock(), Blocks.BEDROCK))
+                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i, j1, k1)).getBlock(), Blocks.BEDROCK) && stack.getStrVsBlock(world.getBlockState(new BlockPos(i, j1, k1))) != 1.0F)
                 {
                   world.getBlockState(new BlockPos(i, j1, k1)).getBlock().dropBlockAsItem(world, new BlockPos(i, j1, k1), world.getBlockState(new BlockPos(i, j1, k1)), 1);
                   world.setBlockToAir(new BlockPos(i, j1, k1));
@@ -135,7 +163,7 @@ public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state,
           {
             for (int j1 = j + 1; j1 >= j - 1; j1--) {
               for (int k1 = k + 1; k1 >= k - 1; k1--) {
-                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i, j1, k1)).getBlock(), Blocks.BEDROCK))
+                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i, j1, k1)).getBlock(), Blocks.BEDROCK) && stack.getStrVsBlock(world.getBlockState(new BlockPos(i, j1, k1))) != 1.0F)
                 {
                   world.getBlockState(new BlockPos(i, j1, k1)).getBlock().dropBlockAsItem(world, new BlockPos(i, j1, k1), world.getBlockState(new BlockPos(i, j1, k1)), 1);
                   world.setBlockToAir(new BlockPos(i, j1, k1));
@@ -147,7 +175,7 @@ public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state,
       {
             for (int i1 = i - 1; i1 <= i + 1; i1++) {
               for (int j1 = j + 1; j1 >= j - 1; j1--) {
-                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i1, j1, k)).getBlock(), Blocks.BEDROCK))
+                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i1, j1, k)).getBlock(), Blocks.BEDROCK) && stack.getStrVsBlock(world.getBlockState(new BlockPos(i1, j1, k))) != 1.0F)
                 {
                   world.getBlockState(new BlockPos(i1, j1, k)).getBlock().dropBlockAsItem(world, new BlockPos(i1, j1, k), world.getBlockState(new BlockPos(i1, j1, k)), 1);
                   world.setBlockToAir(new BlockPos(i1, j1, k));
@@ -159,7 +187,7 @@ public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state,
       {
             for (int i1 = i - 1; i1 <= i + 1; i1++) {
               for (int j1 = j + 1; j1 >= j - 1; j1--) {
-                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i1, j1, k)).getBlock(), Blocks.BEDROCK))
+                if (!Block.isEqualTo(world.getBlockState(new BlockPos(i1, j1, k)).getBlock(), Blocks.BEDROCK) && stack.getStrVsBlock(world.getBlockState(new BlockPos(i1, j1, k))) != 1.0F)
                 {
                   world.getBlockState(new BlockPos(i1, j1, k)).getBlock().dropBlockAsItem(world, new BlockPos(i1, j1, k), world.getBlockState(new BlockPos(i1, j1, k)), 1);
                   world.setBlockToAir(new BlockPos(i1, j1, k));

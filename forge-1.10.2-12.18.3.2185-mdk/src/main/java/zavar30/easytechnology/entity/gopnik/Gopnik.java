@@ -9,14 +9,11 @@ import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import zavar30.easytechnology.ETItems;
 
-public class Gopnik extends EntityWolf
+public class Gopnik extends EntityMob
 {
 	public Gopnik(World worldIn) 
 	{
@@ -40,7 +37,7 @@ public class Gopnik extends EntityWolf
     }
 
 	protected void applyEntityAI()
-    {
+    { 
     	this.targetTasks.addTask(7, new EntityAINearestAttackableTarget<EntityMob>(this, EntityMob.class, true));
     }
 
@@ -50,7 +47,7 @@ public class Gopnik extends EntityWolf
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
@@ -59,11 +56,4 @@ public class Gopnik extends EntityWolf
 	{
 		return 1.3F;
 	}
-	
-	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-		// TODO Auto-generated method stub
-		return super.processInteract(player, hand, stack);
-	}
 }
-

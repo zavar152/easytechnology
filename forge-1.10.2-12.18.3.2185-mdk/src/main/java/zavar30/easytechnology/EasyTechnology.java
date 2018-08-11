@@ -24,9 +24,10 @@ public class EasyTechnology
   public void preInit(FMLPreInitializationEvent event)
   {
     proxy.preInit(event);
-    ETBlocks.load();
     ETItems.load();
+    ETBlocks.load();
     ETMobs.load();
+    ETGenerator.load();
   }
   
   @Mod.EventHandler
