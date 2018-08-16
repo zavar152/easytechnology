@@ -44,7 +44,7 @@ public class ETItems
   private static ToolMaterial boerToolMaterial = EnumHelper.addToolMaterial("BOER", 3, 1000, 15.0F, 0.0F, 0);
   private static ToolMaterial boerylliumToolMaterial = EnumHelper.addToolMaterial("boeryllium", 3, 500, 10.0F, 7.0F, 5).setRepairItem(new ItemStack(ETItems.boeryllium_ingot));
   private static ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("boeryllium_armor", 
-		  Constants.MODID + ":boeryllium_armor", 9, new int[]{2, 4, 6, 3}, 7, 
+		  ETConstants.MODID + ":boeryllium_armor", 9, new int[]{2, 4, 6, 3}, 7, 
 		  SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F).setRepairItem(new ItemStack(Item.getItemFromBlock(ETBlocks.boery_block)));
    
   public static void load()

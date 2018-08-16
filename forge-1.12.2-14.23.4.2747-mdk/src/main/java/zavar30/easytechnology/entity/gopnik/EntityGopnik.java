@@ -76,7 +76,6 @@ public class EntityGopnik extends EntityTameable
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(80.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.70000001192092896D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
     }
 
