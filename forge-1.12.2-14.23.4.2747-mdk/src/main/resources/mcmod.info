@@ -3,5 +3,5 @@
 	"name": "easytechnology",
 	"version": "${version}",
 	"mcversion": "${mcversion}",
-	"authorList": ["Zavar30"]
+	"authorList": ["Zavar30"]         
 }]
