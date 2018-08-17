@@ -5,14 +5,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotDoubleFurnaceOutput extends Slot 
+public class SlotDoubleFurnaceOutput2 extends Slot 
 {
 	@SuppressWarnings("unused")
 	private final EntityPlayer player;
 	@SuppressWarnings("unused")
 	private int removeCount;
 	
-	public SlotDoubleFurnaceOutput(EntityPlayer player, IInventory inventory, int index, int x, int y) 
+	public SlotDoubleFurnaceOutput2(EntityPlayer player, IInventory inventory, int index, int x, int y) 
 	{
 		super(inventory, index, x, y);
 		this.player = player;

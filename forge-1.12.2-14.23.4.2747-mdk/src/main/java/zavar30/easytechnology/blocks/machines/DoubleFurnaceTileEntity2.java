@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class DoubleFurnaceTileEntity extends TileEntity implements IInventory, ITickable
+public class DoubleFurnaceTileEntity2 extends TileEntity implements IInventory, ITickable
 {
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
 	private String customName;
@@ -209,7 +209,7 @@ public class DoubleFurnaceTileEntity extends TileEntity implements IInventory, I
 			if(flag != this.isBurning()) 
 			{
 				flag1 = true;
-				DoubleFurnaceBlock.setState(this.isBurning(), this.world, this.pos);
+				DoubleFurnaceBlock2.setState(this.isBurning(), this.world, this.pos);
 			}
 		} 
 		if(flag1) this.markDirty();
@@ -225,9 +225,9 @@ public class DoubleFurnaceTileEntity extends TileEntity implements IInventory, I
 		if(((ItemStack)this.inventory.get(0)).isEmpty() || ((ItemStack)this.inventory.get(1)).isEmpty()) return false;
 		else 
 		{
-			ItemStack result = DoubleFurnaceRecipes.getInstance().getResult((ItemStack)this.inventory.get(0), (ItemStack)this.inventory.get(1));	
+			ItemStack result = DoubleFurnaceRecipes2.getInstance().getResult((ItemStack)this.inventory.get(0), (ItemStack)this.inventory.get(1));	
 			if(result.isEmpty()) return false;
-			else
+			else   
 			{
 				ItemStack output = (ItemStack)this.inventory.get(3);
 				if(output.isEmpty()) return true;
@@ -244,7 +244,7 @@ public class DoubleFurnaceTileEntity extends TileEntity implements IInventory, I
 		{
 			ItemStack input1 = (ItemStack)this.inventory.get(0);
 			ItemStack input2 = (ItemStack)this.inventory.get(1);
-			ItemStack result = DoubleFurnaceRecipes.getInstance().getResult(input1, input2);
+			ItemStack result = DoubleFurnaceRecipes2.getInstance().getResult(input1, input2);
 			ItemStack output = (ItemStack)this.inventory.get(3);
 			
 			if(output.isEmpty()) this.inventory.set(3, result.copy());

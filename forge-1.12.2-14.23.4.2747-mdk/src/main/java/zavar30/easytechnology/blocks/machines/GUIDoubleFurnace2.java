@@ -6,15 +6,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import zavar30.easytechnology.ETConstants;
 
-public class GUIDoubleFurnace extends GuiContainer
+public class GUIDoubleFurnace2 extends GuiContainer
 {
 	private static final ResourceLocation TEXTURES = new ResourceLocation(ETConstants.MODID + ":textures/gui/double_furnace.png");
 	private final InventoryPlayer player;
-	private final DoubleFurnaceTileEntity tileentity;
+	private final DoubleFurnaceTileEntity2 tileentity;
 	
-	public GUIDoubleFurnace(InventoryPlayer player, DoubleFurnaceTileEntity tileentity) 
+	public GUIDoubleFurnace2(InventoryPlayer player, DoubleFurnaceTileEntity2 tileentity) 
 	{
-		super(new ContainerDoubleFurnace(player, tileentity));
+		super(new ContainerDoubleFurnace2(player, tileentity));
 		this.player = player;
 		this.tileentity = tileentity;
 	}
@@ -34,7 +34,7 @@ public class GUIDoubleFurnace extends GuiContainer
 		this.mc.getTextureManager().bindTexture(TEXTURES);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(DoubleFurnaceTileEntity.isBurning(tileentity))
+		if(DoubleFurnaceTileEntity2.isBurning(tileentity))
 		{
 			int k = this.getBurnLeftScaled(13);
 			this.drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 54 + 12 - k, 176, 12 - k, 14, k + 1);

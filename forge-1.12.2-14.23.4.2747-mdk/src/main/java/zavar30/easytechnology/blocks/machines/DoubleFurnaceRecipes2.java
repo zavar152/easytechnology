@@ -11,18 +11,18 @@ import net.minecraft.item.ItemStack;
 import zavar30.easytechnology.ETBlocks;
 import zavar30.easytechnology.ETItems;
 
-public class DoubleFurnaceRecipes 
+public class DoubleFurnaceRecipes2 
 {	
-		private static final DoubleFurnaceRecipes INSTANCE = new DoubleFurnaceRecipes();
+		private static final DoubleFurnaceRecipes2 INSTANCE = new DoubleFurnaceRecipes2();
 		private final Table<ItemStack, ItemStack, ItemStack> smeltingList = HashBasedTable.<ItemStack, ItemStack, ItemStack>create();
 		private final Map<ItemStack, Float> experienceList = Maps.<ItemStack, Float>newHashMap();
 		
-		public static DoubleFurnaceRecipes getInstance()
+		public static DoubleFurnaceRecipes2 getInstance()
 		{
 			return INSTANCE;
 		}
 		
-		private DoubleFurnaceRecipes() 
+		private DoubleFurnaceRecipes2() 
 		{
 			addRecipe(new ItemStack(ETItems.seed), new ItemStack(ETItems.seed_golden), new ItemStack(ETBlocks.seed_block), 1.0F);
 		}

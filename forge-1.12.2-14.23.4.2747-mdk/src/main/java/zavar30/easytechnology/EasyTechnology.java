@@ -8,9 +8,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import zavar30.easytechnology.blocks.machines.DoubleFurnaceTileEntity;
 import zavar30.easytechnology.proxy.CommonProxy;
 
 @Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.12.2]")//, acceptableRemoteVersions = "[0.5.2]")
@@ -22,14 +19,12 @@ public class EasyTechnology
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
   public static CommonProxy proxy;
   
-  @SuppressWarnings("deprecation")
 @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event)
   {
     proxy.preInit(event);
     ETItems.load();
     ETBlocks.load(); 
-    GameRegistry.registerTileEntity(DoubleFurnaceTileEntity.class, "double_furnace");
     ETMobs.load();
     ETGenerator.load();
   }
@@ -39,7 +34,7 @@ public class EasyTechnology
   {
     proxy.init(event);
     ETRecipes.load();
-    NetworkRegistry.INSTANCE.registerGuiHandler(this, new ETGUI());
+    ETGUI.load();
   }
   
   @Mod.EventHandler

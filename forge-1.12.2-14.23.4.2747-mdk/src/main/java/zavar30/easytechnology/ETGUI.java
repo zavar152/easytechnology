@@ -4,9 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import zavar30.easytechnology.blocks.machines.ContainerDoubleFurnace;
-import zavar30.easytechnology.blocks.machines.DoubleFurnaceTileEntity;
-import zavar30.easytechnology.blocks.machines.GUIDoubleFurnace;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import zavar30.easytechnology.blocks.machines.double_furnace.ContainerDoubleFurnace;
+import zavar30.easytechnology.blocks.machines.double_furnace.DoubleFurnaceTileEntity;
+import zavar30.easytechnology.blocks.machines.double_furnace.GUIDoubleFurnace;
 
 public class ETGUI implements IGuiHandler
 {
@@ -24,4 +25,8 @@ public class ETGUI implements IGuiHandler
 		return null;
 	}
 
+	public static void load()
+	{
+	    NetworkRegistry.INSTANCE.registerGuiHandler(EasyTechnology.instance, new ETGUI());
+	}
 }

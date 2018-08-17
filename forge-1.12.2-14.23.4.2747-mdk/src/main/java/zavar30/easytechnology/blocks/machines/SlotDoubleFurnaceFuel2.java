@@ -4,9 +4,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotDoubleFurnaceFuel extends Slot 
+public class SlotDoubleFurnaceFuel2 extends Slot 
 {
-		public SlotDoubleFurnaceFuel(IInventory inventory, int index, int x, int y) 
+		public SlotDoubleFurnaceFuel2(IInventory inventory, int index, int x, int y) 
 		{
 			super(inventory, index, x, y);
 		}
@@ -14,7 +14,7 @@ public class SlotDoubleFurnaceFuel extends Slot
 		@Override
 		public boolean isItemValid(ItemStack stack)
 		{
-			return DoubleFurnaceTileEntity.isItemFuel(stack);
+			return DoubleFurnaceTileEntity2.isItemFuel(stack);
 		}
 		
 		@Override

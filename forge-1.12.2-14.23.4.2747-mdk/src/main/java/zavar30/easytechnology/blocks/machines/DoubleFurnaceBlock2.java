@@ -31,12 +31,12 @@ import zavar30.easytechnology.ETConstants;
 import zavar30.easytechnology.ETBlocks;
 import zavar30.easytechnology.EasyTechnology;
 
-public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
+public class DoubleFurnaceBlock2 extends Block implements ITileEntityProvider
 {
 	public static final PropertyBool BURNING = PropertyBool.create("burning");
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
-	public DoubleFurnaceBlock(String name)
+	public DoubleFurnaceBlock2(String name)
 	{
 		super(Material.IRON);
 		setRegistryName(name);
@@ -49,7 +49,7 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 		registerRender(name);
 	}
 	
-	public DoubleFurnaceBlock setCreativeTab(CreativeTabs tab)
+	public DoubleFurnaceBlock2 setCreativeTab(CreativeTabs tab)
 	{
 		super.setCreativeTab(tab);
 		return this;
@@ -58,7 +58,7 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) 
 	{
-		return new DoubleFurnaceTileEntity();
+		return new DoubleFurnaceTileEntity2();
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) 
 	{
 
-		DoubleFurnaceTileEntity tileentity = (DoubleFurnaceTileEntity)worldIn.getTileEntity(pos);
+		DoubleFurnaceTileEntity2 tileentity = (DoubleFurnaceTileEntity2)worldIn.getTileEntity(pos);
 		InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 		super.breakBlock(worldIn, pos, state);
 	}

@@ -1,5 +1,7 @@
 package zavar30.easytechnology.blocks.machines;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,19 +11,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerDoubleFurnace extends Container
+public class ContainerDoubleFurnace2 extends Container
 {
-	private final DoubleFurnaceTileEntity tileentity;
+	private final DoubleFurnaceTileEntity2 tileentity;
 	private int cookTime, totalCookTime, burnTime, currentBurnTime;
 	
-	public ContainerDoubleFurnace(InventoryPlayer player, DoubleFurnaceTileEntity tileentity) 
+	public ContainerDoubleFurnace2(InventoryPlayer player, DoubleFurnaceTileEntity2 tileentity) 
 	{
 		this.tileentity = tileentity;
 		
 		this.addSlotToContainer(new Slot(tileentity, 0, 26, 11));
 		this.addSlotToContainer(new Slot(tileentity, 1, 26, 59));
-		this.addSlotToContainer(new SlotDoubleFurnaceFuel(tileentity, 2, 7, 35));
-		this.addSlotToContainer(new SlotDoubleFurnaceOutput(player.player, tileentity, 3, 81, 36));
+		this.addSlotToContainer(new SlotDoubleFurnaceFuel2(tileentity, 2, 7, 35));
+		this.addSlotToContainer(new SlotDoubleFurnaceOutput2(player.player, tileentity, 3, 81, 36));
 		
 		for(int y = 0; y < 3; y++)
 		{
@@ -78,6 +80,7 @@ public class ContainerDoubleFurnace extends Container
 		return this.tileentity.isUsableByPlayer(playerIn);
 	}
 	
+	@Nullable
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) 
 	{
@@ -98,21 +101,21 @@ public class ContainerDoubleFurnace extends Container
 			{		
 				Slot slot1 = (Slot)this.inventorySlots.get(index + 1);
 				
-				if(!DoubleFurnaceRecipes.getInstance().getResult(stack1, slot1.getStack()).isEmpty())
+				if(!DoubleFurnaceRecipes2.getInstance().getResult(stack1, slot1.getStack()).isEmpty())
 				{
 					if(!this.mergeItemStack(stack1, 0, 2, false)) 
 					{
 						return ItemStack.EMPTY;
 					}
-					else if(DoubleFurnaceTileEntity.isItemFuel(stack1))
+					else if(DoubleFurnaceTileEntity2.isItemFuel(stack1))
 					{
 						if(!this.mergeItemStack(stack1, 2, 3, false)) return ItemStack.EMPTY;
 					}
-					else if(DoubleFurnaceTileEntity.isItemFuel(stack1))
+					else if(DoubleFurnaceTileEntity2.isItemFuel(stack1))
 					{
 						if(!this.mergeItemStack(stack1, 2, 3, false)) return ItemStack.EMPTY;
 					}
-					else if(DoubleFurnaceTileEntity.isItemFuel(stack1))
+					else if(DoubleFurnaceTileEntity2.isItemFuel(stack1))
 					{
 						if(!this.mergeItemStack(stack1, 2, 3, false)) return ItemStack.EMPTY;
 					}
