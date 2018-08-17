@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerDoubleFurnace extends Container
+public class ContainerDoubleFurnace extends Container 
 {
 
 	private final DoubleFurnaceTileEntity tileFurnace;
