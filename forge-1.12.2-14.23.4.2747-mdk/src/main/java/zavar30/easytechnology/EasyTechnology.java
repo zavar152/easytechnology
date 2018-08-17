@@ -41,7 +41,7 @@ public class EasyTechnology
   public void postInit(FMLPostInitializationEvent event)
   {
     proxy.postInit(event);
-    System.out.println("ET is ready! - Ëßßßßßßßßßßßßßßßßß");
+    System.out.println("ET is ready! - ffffffffffffffffffffffffffffffffffa");
   }
   
   public static CreativeTabs tab = new CreativeTabs("ETtab")
