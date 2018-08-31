@@ -46,6 +46,8 @@ public class ETItems
   private static ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("boeryllium_armor", 
 		  ETConstants.MODID + ":boeryllium_armor", 9, new int[]{2, 4, 6, 3}, 7, 
 		  SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F).setRepairItem(new ItemStack(Item.getItemFromBlock(ETBlocks.boery_block)));
+  public static SimpleItem oreryllium_ingot;
+  public static SimpleItem oreryllium_ingot_raw;
    
   public static void load()
   {
@@ -72,5 +74,8 @@ public class ETItems
       boeryllium_leggings = new BoerylliumArmorItem("boeryllium_leggings", armorMaterial, 2, EntityEquipmentSlot.LEGS).setCreativeTab(EasyTechnology.tab);
       boeryllium_chestplate = new BoerylliumArmorItem("boeryllium_chestplate", armorMaterial, 1, EntityEquipmentSlot.CHEST).setCreativeTab(EasyTechnology.tab);
       boeryllium_helmet = new BoerylliumArmorItem("boeryllium_helmet", armorMaterial, 1, EntityEquipmentSlot.HEAD).setCreativeTab(EasyTechnology.tab);
+      
+	  oreryllium_ingot = new SimpleItem("oreryllium_ingot").setCreativeTab(EasyTechnology.tab);
+	  oreryllium_ingot_raw = new SimpleItem("oreryllium_ingot_raw").setCreativeTab(EasyTechnology.tab);
   }
 }

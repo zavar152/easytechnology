@@ -3,6 +3,7 @@ package zavar30.easytechnology;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import zavar30.easytechnology.blocks.BoerylliumBlock;
 import zavar30.easytechnology.blocks.BoerylliumOreBlock;
+import zavar30.easytechnology.blocks.OrerylliumOreBlock;
 import zavar30.easytechnology.blocks.SeedBlock;
 import zavar30.easytechnology.blocks.machines.double_furnace.DoubleFurnaceBlock;
 import zavar30.easytechnology.blocks.machines.double_furnace.DoubleFurnaceTileEntity;
@@ -13,9 +14,11 @@ public class ETBlocks
 	public static BoerylliumOreBlock boery_ore;
 	public static BoerylliumBlock boery_block;
 	public static DoubleFurnaceBlock double_furnace;
+	public static OrerylliumOreBlock orery_ore;
 	
 	public static void load()
 	{
+		orery_ore = new OrerylliumOreBlock("oreryllium_ore_block").setCreativeTab(EasyTechnology.tab);
 		boery_ore = new BoerylliumOreBlock("boeryllium_ore_block").setCreativeTab(EasyTechnology.tab);
 		boery_block = new BoerylliumBlock("boeryllium_block").setCreativeTab(EasyTechnology.tab);
 		seed_block = new SeedBlock("seed_block").setCreativeTab(EasyTechnology.tab);

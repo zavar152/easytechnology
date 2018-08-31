@@ -30,6 +30,7 @@ public class ContainerDoubleFurnace extends Container
         this.addSlotToContainer(new Slot(furnaceInventory, 0, 56, 17));
         this.addSlotToContainer(new SlotFurnaceFuel(furnaceInventory, 1, 56, 53));
         this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 2, 116, 35));
+        this.addSlotToContainer(new OrerylliumSlot(furnaceInventory, 3, 34, 35));
 
         for (int i = 0; i < 3; ++i)
         {
@@ -106,7 +107,6 @@ public class ContainerDoubleFurnace extends Container
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-
             if (index == 2)
             {
                 if (!this.mergeItemStack(itemstack1, 3, 39, true))
@@ -116,7 +116,7 @@ public class ContainerDoubleFurnace extends Container
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
-            else if (index != 1 && index != 0)
+            else if (index != 1 && index != 0 && index != 3)
             {
                 if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null)
                 {

@@ -35,14 +35,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITickable, ISidedInventory
 {
-	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
+	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
 	
 	private int burnTime;
 	private int currentBurnTime;
 	private int cookTime;
 	private int totalCookTime;
 	private boolean lastState = false;
-
+	private int count = 0;
+	
 	private String customName;
 	
 	@Override
@@ -344,7 +345,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 
         if (!this.world.isRemote)
         {
-            if (this.isBurning() || this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(0) != ItemStack.EMPTY)
+            if (this.isBurning() || this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(0) != ItemStack.EMPTY && this.furnaceItemStacks.get(3) != ItemStack.EMPTY)
             {
                 if (!this.isBurning() && this.canSmelt())
                 {
@@ -409,7 +410,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	
 	private boolean canSmelt()
     {
-        if (this.furnaceItemStacks.get(0) == ItemStack.EMPTY)
+        if (this.furnaceItemStacks.get(0) == ItemStack.EMPTY || this.furnaceItemStacks.get(3) == ItemStack.EMPTY)
         {
             return false;
         }
@@ -450,6 +451,12 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             if (this.furnaceItemStacks.get(0).getCount() <= 0)
             {
                 this.furnaceItemStacks.set(0, ItemStack.EMPTY);
+            }
+            count++;
+            if(count == 8)
+            {
+            	this.furnaceItemStacks.get(3).shrink(1);
+            	count = 0;
             }
         }
     }
