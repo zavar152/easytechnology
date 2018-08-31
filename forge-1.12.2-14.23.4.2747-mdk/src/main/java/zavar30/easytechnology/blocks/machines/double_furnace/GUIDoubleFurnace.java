@@ -3,15 +3,15 @@ package zavar30.easytechnology.blocks.machines.double_furnace;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import zavar30.easytechnology.ETConstants;
 
 @SideOnly(Side.CLIENT)
 public class GUIDoubleFurnace extends GuiContainer
 {
-    private static final ResourceLocation FURNACE_GUI_TEXTURES = new ResourceLocation("textures/gui/container/furnace.png");
+    private static final ResourceLocation FURNACE_GUI_TEXTURES = new ResourceLocation(ETConstants.MODID + ":textures/gui/double_furnace.png");
     /** The player inventory bound to this GUI. */
     private final InventoryPlayer playerInventory;
     private final DoubleFurnaceTileEntity tileFurnace;
@@ -44,7 +44,7 @@ public class GUIDoubleFurnace extends GuiContainer
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
 
-        if (TileEntityFurnace.isBurning(this.tileFurnace))
+        if (DoubleFurnaceTileEntity.isBurning(this.tileFurnace))
         {
             int k = this.getBurnLeftScaled(13);
             this.drawTexturedModalRect(i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
@@ -56,6 +56,8 @@ public class GUIDoubleFurnace extends GuiContainer
 
     private int getCookProgressScaled(int pixels)
     {
+    	//System.out.println("cookTime - "+this.tileFurnace.getField(2));
+    	//System.out.println("totalCookTime - "+this.tileFurnace.getField(3));
         int i = this.tileFurnace.getField(2);
         int j = this.tileFurnace.getField(3);
         return j != 0 && i != 0 ? i * pixels / j : 0;
@@ -63,13 +65,20 @@ public class GUIDoubleFurnace extends GuiContainer
 
     private int getBurnLeftScaled(int pixels)
     {
+    	//System.out.println("currentBurnTime - "+this.tileFurnace.getField(1));
         int i = this.tileFurnace.getField(1);
 
-        if (i == 0)
+        if (i <= 0)
         {
             i = 200;
         }
 
+        //System.out.println("burnTime - "+this.tileFurnace.getField(0));
+        if(this.tileFurnace.getField(0) <= 0)
+        {
+        	return 0;
+        }
+        else
         return this.tileFurnace.getField(0) * pixels / i;
     }
 }

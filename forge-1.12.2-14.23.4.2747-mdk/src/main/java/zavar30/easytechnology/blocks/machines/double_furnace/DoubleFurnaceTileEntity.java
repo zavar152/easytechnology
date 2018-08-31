@@ -3,7 +3,6 @@ package zavar30.easytechnology.blocks.machines.double_furnace;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -30,6 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,6 +41,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	private int currentBurnTime;
 	private int cookTime;
 	private int totalCookTime;
+	private boolean lastState = false;
 
 	private String customName;
 	
@@ -141,7 +142,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
         else
         {
             ItemStack itemstack = this.furnaceItemStacks.get(index);
-            return isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && (itemstack == null || itemstack.getItem() != Items.BUCKET);
+            return isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && (itemstack == ItemStack.EMPTY || itemstack.getItem() != Items.BUCKET);
         }
 	}
 
@@ -150,48 +151,35 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
         return getItemBurnTime(stack) > 0;
     }
     
-    @SuppressWarnings("deprecation")
-	public static int getItemBurnTime(ItemStack stack)
-    {
-        if (stack == null)
-        {
-            return 0;
-        }
-        else
-        {
-            Item item = stack.getItem();
+    @SuppressWarnings({ "deprecation" })
+	public static int getItemBurnTime(ItemStack fuel) 
+	{
+		if(fuel.isEmpty()) return 0;
+		else 
+		{
+			Item item = fuel.getItem();
 
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR)
-            {
-                Block block = Block.getBlockFromItem(item);
+			if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR) 
+			{
+				Block block = Block.getBlockFromItem(item);
 
-                if (block == Blocks.WOODEN_SLAB)
-                {
-                    return 150;
-                }
+				if (block == Blocks.WOODEN_SLAB) return 150;
+				if (block.getDefaultState().getMaterial() == Material.WOOD) return 300;
+				if (block == Blocks.COAL_BLOCK) return 16000;
+			}
 
-                if (block.getDefaultState().getMaterial() == Material.WOOD)
-                {
-                    return 300;
-                }
+			if (item instanceof ItemTool && "WOOD".equals(((ItemTool)item).getToolMaterialName())) return 200;
+			if (item instanceof ItemSword && "WOOD".equals(((ItemSword)item).getToolMaterialName())) return 200;
+			if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe)item).getMaterialName())) return 200;
+			if (item == Items.STICK) return 100;
+			if (item == Items.COAL) return 1600;
+			if (item == Items.LAVA_BUCKET) return 20000;
+			if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
+			if (item == Items.BLAZE_ROD) return 2400;
 
-                if (block == Blocks.COAL_BLOCK)
-                {
-                    return 16000;
-                }
-            }
-
-            if (item instanceof ItemTool && "WOOD".equals(((ItemTool)item).getToolMaterialName())) return 200;
-            if (item instanceof ItemSword && "WOOD".equals(((ItemSword)item).getToolMaterialName())) return 200;
-            if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe)item).getMaterialName())) return 200;
-            if (item == Items.STICK) return 100;
-            if (item == Items.COAL) return 1600;
-            if (item == Items.LAVA_BUCKET) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
-            if (item == Items.BLAZE_ROD) return 2400;
-            return net.minecraftforge.fml.common.registry.GameRegistry.getFuelValue(stack);
-        }
-    }
+			return GameRegistry.getFuelValue(fuel);
+		}
+	}
 	
 	@Override
 	public int getField(int id) 
@@ -344,10 +332,9 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
         return inventory.getField(0) > 0;
     }
 	
-	@Override
 	public void update() 
 	{
-		boolean flag = this.isBurning();
+		lastState = isBurning();
         boolean flag1 = false;
 
         if (this.isBurning())
@@ -357,7 +344,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 
         if (!this.world.isRemote)
         {
-            if (this.isBurning() || this.furnaceItemStacks.get(1) != null && this.furnaceItemStacks.get(0) != null)
+            if (this.isBurning() || this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(0) != ItemStack.EMPTY)
             {
                 if (!this.isBurning() && this.canSmelt())
                 {
@@ -368,7 +355,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
                     {
                         flag1 = true;
 
-                        if (this.furnaceItemStacks.get(1) != null)
+                        if (this.furnaceItemStacks.get(1) != ItemStack.EMPTY)
                         {
                             this.furnaceItemStacks.get(1).setCount(this.furnaceItemStacks.get(1).getCount()-1);
 
@@ -402,13 +389,18 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
                 this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
 
-            if (flag != this.isBurning())
+            if(lastState != this.isBurning())
             {
-                flag1 = true;
-                BlockFurnace.setState(this.isBurning(), this.world, this.pos);
+            	flag1 = true;
+            	DoubleFurnaceBlock.setState(this.isBurning(), this.world, this.pos);
+                DoubleFurnaceBlock.isBurning = this.isBurning();
+            }
+            else
+            {
+            	DoubleFurnaceBlock.setState(this.isBurning(), this.world, this.pos);
+                DoubleFurnaceBlock.isBurning = this.isBurning();
             }
         }
-
         if (flag1)
         {
             this.markDirty();
@@ -417,15 +409,15 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	
 	private boolean canSmelt()
     {
-        if (this.furnaceItemStacks.get(0) == null)
+        if (this.furnaceItemStacks.get(0) == ItemStack.EMPTY)
         {
             return false;
         }
         else
         {
             ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
-            if (itemstack == null) return false;
-            if (this.furnaceItemStacks.get(2) == null) return true;
+            if (itemstack == ItemStack.EMPTY) return false;
+            if (this.furnaceItemStacks.get(2) == ItemStack.EMPTY) return true;
             if (!this.furnaceItemStacks.get(2).isItemEqual(itemstack)) return false;
             int result = furnaceItemStacks.get(2).getCount() + itemstack.getCount();
             return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks.get(2).getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
@@ -438,16 +430,17 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
         {
             ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
 
-            if (this.furnaceItemStacks.get(2) == null)
+            if (this.furnaceItemStacks.get(2) == ItemStack.EMPTY)
             {
+            	itemstack.setCount(itemstack.getCount()*2);
                 this.furnaceItemStacks.set(2, itemstack.copy());
             }
             else if (this.furnaceItemStacks.get(2).getItem() == itemstack.getItem())
             {
-                this.furnaceItemStacks.get(2).setCount(this.furnaceItemStacks.get(2).getCount() + itemstack.getCount()); // Forge BugFix: Results may have multiple items
+                this.furnaceItemStacks.get(2).setCount(this.furnaceItemStacks.get(2).getCount() + itemstack.getCount()*2); // Forge BugFix: Results may have multiple items
             }
 
-            if (this.furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks.get(0).getMetadata() == 1 && this.furnaceItemStacks.get(1) != null && this.furnaceItemStacks.get(1).getItem() == Items.BUCKET)
+            if (this.furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks.get(0).getMetadata() == 1 && this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(1).getItem() == Items.BUCKET)
             {
                 this.furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
             }

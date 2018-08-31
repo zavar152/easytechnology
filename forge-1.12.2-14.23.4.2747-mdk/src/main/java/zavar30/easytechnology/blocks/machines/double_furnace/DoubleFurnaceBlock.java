@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -22,21 +23,27 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import zavar30.easytechnology.ETConstants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import zavar30.easytechnology.ETBlocks;
+import zavar30.easytechnology.ETConstants;
 import zavar30.easytechnology.EasyTechnology;
 
 public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 {
 	public static final PropertyBool BURNING = PropertyBool.create("burning");
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static boolean isBurning = false;
 	
-	public DoubleFurnaceBlock(String name)
+	@SuppressWarnings("static-access")
+	public DoubleFurnaceBlock(String name, boolean isBurning)
 	{
 		super(Material.IRON);
 		setRegistryName(name);
@@ -44,7 +51,8 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
         /*setHardness(0.2F);
         setLightOpacity(1);
         setSoundType(SoundType.PLANT);*/
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
+		this.isBurning = isBurning;
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, this.isBurning));
 		register();
 		registerRender(name);
 	}
@@ -78,7 +86,6 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) 
 	{
-
 		DoubleFurnaceTileEntity tileentity = (DoubleFurnaceTileEntity)worldIn.getTileEntity(pos);
 		InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 		super.breakBlock(worldIn, pos, state);
@@ -130,15 +137,53 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
         }
 	}
 	
+	@SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "incomplete-switch", "static-access" })
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    {
+        if (this.isBurning)
+        {
+            EnumFacing enumfacing = (EnumFacing)stateIn.getValue(FACING);
+            double d0 = (double)pos.getX() + 0.5D;
+            double d1 = (double)pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
+            double d2 = (double)pos.getZ() + 0.5D;
+            double d4 = rand.nextDouble() * 0.6D - 0.3D;
+
+            if (rand.nextDouble() < 0.1D)
+            {
+                worldIn.playSound((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            }
+
+            switch (enumfacing)
+            {
+                case WEST:
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    break;
+                case EAST:
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    break;
+                case NORTH:
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
+                    break;
+                case SOUTH:
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D, new int[0]);
+            }
+        }
+    }
+	
 	public static void setState(boolean active, World worldIn, BlockPos pos) 
 	{
 		IBlockState state = worldIn.getBlockState(pos);
 		TileEntity tileentity = worldIn.getTileEntity(pos);
-		if(active)
+		if(active) 
 			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
 		else 
 			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
-		if(tileentity != null) 
+	if(tileentity != null) 
 		{
 			tileentity.validate();
 			worldIn.setTileEntity(pos, tileentity);
