@@ -19,7 +19,7 @@ public class EasyTechnology
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
   public static CommonProxy proxy;
   
-@Mod.EventHandler
+@Mod.EventHandler 
   public void preInit(FMLPreInitializationEvent event)
   {
     proxy.preInit(event);
