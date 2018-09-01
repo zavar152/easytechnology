@@ -28,7 +28,7 @@ public class EasyTechnology
     ETMobs.load();
     ETGenerator.load();
   }
-  
+    
   @Mod.EventHandler
   public void init(FMLInitializationEvent event)
   { 
