@@ -24,7 +24,7 @@ public class EasyTechnology
   {
     proxy.preInit(event);
     ETItems.load();
-    ETBlocks.load(); 
+    ETBlocks.load();   
     ETMobs.load();
     ETGenerator.load();
   }
