@@ -19,19 +19,19 @@ public class EasyTechnology
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
   public static CommonProxy proxy;
   
-@Mod.EventHandler
+@Mod.EventHandler 
   public void preInit(FMLPreInitializationEvent event)
   {
     proxy.preInit(event);
     ETItems.load();
-    ETBlocks.load(); 
+    ETBlocks.load();   
     ETMobs.load();
     ETGenerator.load();
   }
-  
+     
   @Mod.EventHandler
   public void init(FMLInitializationEvent event)
-  {
+  { 
     proxy.init(event);
     ETRecipes.load();
     ETGUI.load();
