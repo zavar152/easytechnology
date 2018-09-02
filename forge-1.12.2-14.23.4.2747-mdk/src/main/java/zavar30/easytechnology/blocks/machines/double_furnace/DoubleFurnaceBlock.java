@@ -7,7 +7,6 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +18,9 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -38,23 +39,22 @@ import zavar30.easytechnology.EasyTechnology;
 
 public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 {
-	public static final PropertyBool BURNING = PropertyBool.create("burning");
+	//public static final PropertyBool BURNING = PropertyBool.create("burning");
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public static boolean isBurning = false;
+    public final boolean isBurning;
 	
-	@SuppressWarnings("static-access")
-	public DoubleFurnaceBlock(String name, boolean isBurning)
+	public DoubleFurnaceBlock(String RegName, String UnlName, boolean isBurning)
 	{
 		super(Material.IRON);
-		setRegistryName(name);
-		setUnlocalizedName(name);
+		setRegistryName(RegName);
+		setUnlocalizedName(UnlName);
         /*setHardness(0.2F);
         setLightOpacity(1);
         setSoundType(SoundType.PLANT);*/
 		this.isBurning = isBurning;
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, this.isBurning));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		register();
-		registerRender(name);
+		registerRender(RegName);
 	}
 	
 	public DoubleFurnaceBlock setCreativeTab(CreativeTabs tab)
@@ -107,11 +107,27 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
-		if(!worldIn.isRemote)
+		/*if(!worldIn.isRemote)
 		{
 			playerIn.openGui(EasyTechnology.instance, ETConstants.DOUBLE_FURN_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
-		return true;
+		return true;*/
+		
+		if (worldIn.isRemote)
+        {
+            return true;
+        }
+        else
+        {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+
+            if (tileentity instanceof DoubleFurnaceTileEntity)
+            {
+                playerIn.displayGui((DoubleFurnaceTileEntity)tileentity);
+            }
+
+            return true;
+        }
 	}
 	
 	@Override
@@ -138,7 +154,7 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	}
 	
 	@SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "incomplete-switch", "static-access" })
+    @SuppressWarnings({ "incomplete-switch"})
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (this.isBurning)
@@ -180,9 +196,17 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 		IBlockState state = worldIn.getBlockState(pos);
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if(active) 
-			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
-		else 
-			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
+		{
+			worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
+		}
+		else //
+		{
+			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
+		}
 	if(tileentity != null) 
 		{
 			tileentity.validate();
@@ -211,7 +235,7 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	@Override
 	protected BlockStateContainer createBlockState() 
 	{
-		return new BlockStateContainer(this, new IProperty[] {BURNING, FACING});
+		return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
 	
 	@Override
