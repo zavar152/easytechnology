@@ -385,7 +385,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
                     this.cookTime = 0;
                 }
             }
-            else if (!this.isBurning() && this.cookTime > 0)
+            else if ((!this.isBurning() && this.cookTime > 0) || this.furnaceItemStacks.get(3).isEmpty())
             {
                 this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
@@ -393,7 +393,6 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             {
                 flag1 = true;
             	DoubleFurnaceBlock.setState(this.isBurning(), this.world, this.pos);
-                System.out.println(this.isBurning());
             }
         }
         if (flag1)

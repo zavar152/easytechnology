@@ -1,7 +1,7 @@
 [{
 	"modid": "easytechnology",
 	"name": "easytechnology",
-	"version": "1.12.2-0.6.1",
+	"version": "${version}",
 	"mcversion": "${mcversion}",
 	"authorList": ["Zavar30"]
 }]
