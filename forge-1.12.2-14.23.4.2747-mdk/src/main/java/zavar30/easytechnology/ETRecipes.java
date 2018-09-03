@@ -10,7 +10,7 @@ public class ETRecipes
 {
 	private static String[] recipes = {"boer","boer_case","boer_main","boer_controller","boeryllium_block","seed_block","simple_pack",
 			"golden_pack","boeryllium_pickaxe","boeryllium_sword","boeryllium_spade","boeryllium_axe","boeryllium_hoe","boeryllium_helmet",
-			"boeryllium_chestplate","boeryllium_leggings","boeryllium_boots","seed","seed_golden"};
+			"boeryllium_chestplate","boeryllium_leggings","boeryllium_boots","seed","seed_golden","machine_controller"};
 	
 	public static void load()
 	{ 

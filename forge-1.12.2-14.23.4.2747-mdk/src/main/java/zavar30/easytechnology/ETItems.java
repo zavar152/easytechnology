@@ -48,6 +48,7 @@ public class ETItems
 		  SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F).setRepairItem(new ItemStack(Item.getItemFromBlock(ETBlocks.boery_block)));
   public static SimpleItem oreryllium_ingot;
   public static SimpleItem oreryllium_ingot_raw;
+  public static SimpleItem machine_controller;
    
   public static void load()
   {
@@ -77,5 +78,7 @@ public class ETItems
       
 	  oreryllium_ingot = new SimpleItem("oreryllium_ingot").setCreativeTab(EasyTechnology.tab);
 	  oreryllium_ingot_raw = new SimpleItem("oreryllium_ingot_raw").setCreativeTab(EasyTechnology.tab);
+	  
+	  machine_controller = new SimpleItem("machine_controller").setCreativeTab(EasyTechnology.tab);
   }
 }

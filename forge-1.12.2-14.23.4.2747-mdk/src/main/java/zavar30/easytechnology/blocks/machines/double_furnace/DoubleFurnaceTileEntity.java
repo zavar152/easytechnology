@@ -385,7 +385,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
                     this.cookTime = 0;
                 }
             }
-            else if ((!this.isBurning() && this.cookTime > 0) || this.furnaceItemStacks.get(3).isEmpty())
+            else if (!this.isBurning() && this.cookTime > 0)
             {
                 this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
@@ -432,6 +432,12 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             else if (this.furnaceItemStacks.get(2).getItem() == itemstack.getItem())
             {
                 this.furnaceItemStacks.get(2).setCount(this.furnaceItemStacks.get(2).getCount() + itemstack.getCount()*2); // Forge BugFix: Results may have multiple items
+                count++;
+                if(count == 4)
+                {
+                	this.furnaceItemStacks.get(3).shrink(1);
+                	count = 0;
+                }
             }
 
             if (this.furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks.get(0).getMetadata() == 1 && this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(1).getItem() == Items.BUCKET)
@@ -444,12 +450,6 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             if (this.furnaceItemStacks.get(0).getCount() <= 0)
             {
                 this.furnaceItemStacks.set(0, ItemStack.EMPTY);
-            }
-            count++;
-            if(count == 8)
-            {
-            	this.furnaceItemStacks.get(3).shrink(1);
-            	count = 0;
             }
         }
     }
