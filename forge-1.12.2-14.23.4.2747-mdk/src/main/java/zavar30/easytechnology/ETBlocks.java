@@ -24,7 +24,7 @@ public class ETBlocks
 		boery_block = new BoerylliumBlock("boeryllium_block").setCreativeTab(EasyTechnology.tab);
 		seed_block = new SeedBlock("seed_block").setCreativeTab(EasyTechnology.tab);
 		double_furnace = new DoubleFurnaceBlock("double_furnace","double_furnace",false).setCreativeTab(EasyTechnology.tab);
-		lit_double_furnace = new DoubleFurnaceBlock("lit_double_furnace","double_furnace",true).setCreativeTab(EasyTechnology.tab);
+		lit_double_furnace = new DoubleFurnaceBlock("lit_double_furnace","double_furnace",true).setLightLevel(0.875F);
 		loadTileEntities();
 	} 
 	

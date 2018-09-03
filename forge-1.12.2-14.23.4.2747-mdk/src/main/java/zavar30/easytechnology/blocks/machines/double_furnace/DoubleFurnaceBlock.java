@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -18,9 +19,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -39,7 +38,6 @@ import zavar30.easytechnology.EasyTechnology;
 
 public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 {
-	//public static final PropertyBool BURNING = PropertyBool.create("burning");
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public final boolean isBurning;
 	
@@ -48,9 +46,8 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 		super(Material.IRON);
 		setRegistryName(RegName);
 		setUnlocalizedName(UnlName);
-        /*setHardness(0.2F);
-        setLightOpacity(1);
-        setSoundType(SoundType.PLANT);*/
+        setHardness(3.5F);
+        setSoundType(SoundType.STONE);
 		this.isBurning = isBurning;
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		register();
@@ -60,6 +57,12 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	public DoubleFurnaceBlock setCreativeTab(CreativeTabs tab)
 	{
 		super.setCreativeTab(tab);
+		return this;
+	}
+	
+	public DoubleFurnaceBlock setLightLevel(float value)
+	{
+		super.setLightLevel(value);
 		return this;
 	}
 	
@@ -84,11 +87,14 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	}
 	
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) 
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) 
 	{
-		DoubleFurnaceTileEntity tileentity = (DoubleFurnaceTileEntity)worldIn.getTileEntity(pos);
-		InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
-		super.breakBlock(worldIn, pos, state);
+		if(!world.isRemote)
+		{
+		DoubleFurnaceTileEntity tileentity = (DoubleFurnaceTileEntity)world.getTileEntity(pos);
+		InventoryHelper.dropInventoryItems(world, pos, tileentity);
+		}
+		return super.removedByPlayer(state, world, pos, player, willHarvest);
 	}
 	
 	@Override
@@ -107,27 +113,11 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
-		/*if(!worldIn.isRemote)
+		if(!worldIn.isRemote)
 		{
 			playerIn.openGui(EasyTechnology.instance, ETConstants.DOUBLE_FURN_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
-		return true;*/
-		
-		if (worldIn.isRemote)
-        {
-            return true;
-        }
-        else
-        {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-
-            if (tileentity instanceof DoubleFurnaceTileEntity)
-            {
-                playerIn.displayGui((DoubleFurnaceTileEntity)tileentity);
-            }
-
-            return true;
-        }
+		return true;
 	}
 	
 	@Override
@@ -198,13 +188,13 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 		if(active) 
 		{
 			worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+			//worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
 			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
 		}
 		else //
 		{
 			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
+			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
 			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
 		}
 	if(tileentity != null) 
