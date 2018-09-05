@@ -1,5 +1,6 @@
 package zavar30.easytechnology;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import zavar30.easytechnology.blocks.BoerylliumBlock;
 import zavar30.easytechnology.blocks.BoerylliumOreBlock;
@@ -17,6 +18,9 @@ public class ETBlocks
 	public static DoubleFurnaceBlock lit_double_furnace;
 	public static OrerylliumOreBlock orery_ore;
 	
+	public static final Item[] BLOCKS = {Item.getItemFromBlock(boery_ore),Item.getItemFromBlock(orery_ore),
+			Item.getItemFromBlock(boery_block),Item.getItemFromBlock(seed_block),Item.getItemFromBlock(double_furnace)};
+	
 	public static void load()
 	{
 		orery_ore = new OrerylliumOreBlock("oreryllium_ore_block").setCreativeTab(EasyTechnology.tab);
@@ -25,7 +29,7 @@ public class ETBlocks
 		seed_block = new SeedBlock("seed_block").setCreativeTab(EasyTechnology.tab);
 		double_furnace = new DoubleFurnaceBlock("double_furnace","double_furnace",false).setCreativeTab(EasyTechnology.tab);
 		lit_double_furnace = new DoubleFurnaceBlock("lit_double_furnace","double_furnace",true).setLightLevel(0.875F);
-		loadTileEntities();
+		loadTileEntities();	
 	} 
 	
 	@SuppressWarnings("deprecation")

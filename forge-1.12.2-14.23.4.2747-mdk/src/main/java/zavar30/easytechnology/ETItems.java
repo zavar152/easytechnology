@@ -49,7 +49,12 @@ public class ETItems
   public static SimpleItem oreryllium_ingot;
   public static SimpleItem oreryllium_ingot_raw;
   public static SimpleItem machine_controller;
-   
+  
+  public static final Item[] ITEMS = {boeryllium_ingot,boeryllium_ingot_raw,oreryllium_ingot,oreryllium_ingot_raw,
+		  boer,boer_controller,boer_main,boer_case,machine_controller,boeryllium_pickaxe,boeryllium_sword,boeryllium_spade,
+		  boeryllium_axe,boeryllium_hoe,boeryllium_boots,boeryllium_leggings,boeryllium_chestplate,boeryllium_helmet,
+		  seed,seed_golden,pack,golden_pack};
+  
   public static void load()
   {
 	  boer_main = new SimpleItem("boer_main").setCreativeTab(EasyTechnology.tab);
