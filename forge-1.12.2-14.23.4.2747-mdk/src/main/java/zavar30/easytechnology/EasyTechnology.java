@@ -1,14 +1,7 @@
 package zavar30.easytechnology;
 
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
-import com.google.common.collect.Ordering;
-
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;

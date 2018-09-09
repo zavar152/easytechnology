@@ -55,7 +55,7 @@ public class ETRecipes
     	        " S ", 'I', ETItems.boeryllium_ingot, 'S', Items.STICK});
     GameRegistry.addRecipe(new ItemStack(ETItems.boeryllium_axe, 1), new Object[] 
     		{   "II ",
-    	        "IS ",
+    	        "IS ", 
     	        " S ", 'I', ETItems.boeryllium_ingot, 'S', Items.STICK});
     GameRegistry.addRecipe(new ItemStack(ETItems.boeryllium_hoe, 1), new Object[] 
     		{   "II ",
@@ -69,7 +69,7 @@ public class ETRecipes
     		{   " I ",
     	        " I ",
     	        " S ", 'I', ETItems.boeryllium_ingot, 'S', Items.STICK});
-    GameRegistry.addRecipe(new ItemStack(ETItems.simple_pack, 1), new Object[] 
+    GameRegistry.addRecipe(new ItemStack(ETItems.pack, 1), new Object[] 
     		{   "SSS",
     	        "PSP",
     	        " P ", 'S', ETItems.seed, 'P', Items.PAPER});
@@ -77,8 +77,26 @@ public class ETRecipes
     		{   "SSS",
     	        "PSP",
     	        " P ", 'S', ETItems.seed_golden, 'P', Items.PAPER});
+    GameRegistry.addRecipe(new ItemStack(ETItems.seed, 3), new Object[] 
+    		{   "   ",
+    	        " D ",
+    	        " P ", 'D', new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), 'P', Blocks.DIRT});
+    GameRegistry.addRecipe(new ItemStack(ETItems.seed_golden, 3), new Object[] 
+    		{   "   ",
+    	        " D ",
+    	        " P ", 'D', new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), 'P', Items.GOLD_INGOT});
+    GameRegistry.addRecipe(new ItemStack(ETItems.machine_controller, 2), new Object[] 
+    		{   "IOI",
+    	        "OBO",
+    	        "IOI", 'B', Blocks.REDSTONE_BLOCK, 'O', ETItems.oreryllium_ingot, 'I', Items.IRON_INGOT});
+    GameRegistry.addRecipe(new ItemStack(ETBlocks.double_furnace, 1), new Object[] 
+    		{   "IOI",
+    	        "OCO",
+    	        "IBI", 'B', ETBlocks.boery_block, 'O', ETItems.oreryllium_ingot, 'I', Items.IRON_INGOT, 'C', ETItems.machine_controller});
+    
     
     GameRegistry.addSmelting(ETItems.boeryllium_ingot_raw, new ItemStack(ETItems.boeryllium_ingot), 1.0F);
+    GameRegistry.addSmelting(ETItems.oreryllium_ingot_raw, new ItemStack(ETItems.oreryllium_ingot), 1.0F);
   }
 }
 

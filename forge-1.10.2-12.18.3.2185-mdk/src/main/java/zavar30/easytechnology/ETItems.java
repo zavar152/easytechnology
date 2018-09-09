@@ -32,7 +32,7 @@ public class ETItems
   public static SimpleItem boer_controller;
   public static SeedItem seed;
   public static SeedItem seed_golden;
-  public static SeedItem simple_pack; 
+  public static SeedItem pack; 
   public static SeedItem golden_pack;
   public static BoerylliumPickaxeItem boeryllium_pickaxe;
   public static BoerylliumSwordItem boeryllium_sword;
@@ -44,8 +44,16 @@ public class ETItems
   private static ToolMaterial boerToolMaterial = EnumHelper.addToolMaterial("BOER", 3, 1000, 15.0F, 0.0F, 0);
   private static ToolMaterial boerylliumToolMaterial = EnumHelper.addToolMaterial("boeryllium", 3, 500, 10.0F, 7.0F, 5).setRepairItem(new ItemStack(ETItems.boeryllium_ingot));
   private static ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("boeryllium_armor", 
-		  Constants.MODID + ":boeryllium_armor", 9, new int[]{2, 4, 6, 3}, 7, 
+		  ETConstants.MODID + ":boeryllium_armor", 9, new int[]{2, 4, 6, 3}, 7, 
 		  SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
+  public static SimpleItem oreryllium_ingot;
+  public static SimpleItem oreryllium_ingot_raw;
+  public static SimpleItem machine_controller;
+  
+  public static final Item[] ITEMS = {boeryllium_ingot,boeryllium_ingot_raw,oreryllium_ingot,oreryllium_ingot_raw,
+		  boer,boer_controller,boer_main,boer_case,machine_controller,boeryllium_pickaxe,boeryllium_sword,boeryllium_spade,
+		  boeryllium_axe,boeryllium_hoe,boeryllium_boots,boeryllium_leggings,boeryllium_chestplate,boeryllium_helmet,
+		  seed,seed_golden,pack,golden_pack};
   public static void load()
   {
 	  boer_main = new SimpleItem("boer_main").setCreativeTab(EasyTechnology.tab);
@@ -64,12 +72,17 @@ public class ETItems
 	  
 	  seed = new SeedItem("seed", 1, 1, false).setCreativeTab(EasyTechnology.tab);
 	  seed_golden = new SeedItem("seed_golden", 3, 5, false).setCreativeTab(EasyTechnology.tab);
-	  simple_pack = new SeedItem("simple_pack", 5, 5, false).setCreativeTab(EasyTechnology.tab);
+	  pack = new SeedItem("simple_pack", 5, 5, false).setCreativeTab(EasyTechnology.tab);
 	  golden_pack = new SeedItem("golden_pack", 7, 7, false).setCreativeTab(EasyTechnology.tab).setEffect(21, 3000, 10);
 	  
 	  boeryllium_boots = new BoerylliumArmorItem("boeryllium_boots", armorMaterial, 1, EntityEquipmentSlot.FEET).setCreativeTab(EasyTechnology.tab);
       boeryllium_leggings = new BoerylliumArmorItem("boeryllium_leggings", armorMaterial, 2, EntityEquipmentSlot.LEGS).setCreativeTab(EasyTechnology.tab);
       boeryllium_chestplate = new BoerylliumArmorItem("boeryllium_chestplate", armorMaterial, 1, EntityEquipmentSlot.CHEST).setCreativeTab(EasyTechnology.tab);
       boeryllium_helmet = new BoerylliumArmorItem("boeryllium_helmet", armorMaterial, 1, EntityEquipmentSlot.HEAD).setCreativeTab(EasyTechnology.tab);
+ 
+	  oreryllium_ingot = new SimpleItem("oreryllium_ingot").setCreativeTab(EasyTechnology.tab);
+	  oreryllium_ingot_raw = new SimpleItem("oreryllium_ingot_raw").setCreativeTab(EasyTechnology.tab);
+	  
+	  machine_controller = new SimpleItem("machine_controller").setCreativeTab(EasyTechnology.tab);
   }
 }

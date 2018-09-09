@@ -21,10 +21,10 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITickable, ISidedInventory
 {
-	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
+	private ItemStack[] furnaceItemStacks = new ItemStack[4];
 	
 	private int burnTime;
 	private int currentBurnTime;
@@ -49,23 +49,13 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	@Override
 	public int getSizeInventory() 
 	{
-		return this.furnaceItemStacks.size();
+		return this.furnaceItemStacks.length;
 	}
-
-	@Override
-	public boolean isEmpty() 
-	{
-		for(ItemStack stack : this.furnaceItemStacks)
-		{
-			if(!stack.isEmpty()) return false;
-		}
-		return true;
-	}
-
+	
 	@Override
 	public ItemStack getStackInSlot(int index) 
 	{
-		return this.furnaceItemStacks.get(index);
+		return this.furnaceItemStacks[index];
 	}
 
 	@Nullable
@@ -84,20 +74,20 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack)
 	{
-		ItemStack itemstack = (ItemStack)this.furnaceItemStacks.get(index);
-		boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
-		this.furnaceItemStacks.set(index, stack);
-		
-		if(stack.getCount() > this.getInventoryStackLimit())
-		{
-			stack.setCount(this.getInventoryStackLimit());
-		}
-		if(index == 0 && !flag)
-		{
-			this.totalCookTime = this.getCookTime(stack);
-			this.cookTime = 0;
-			this.markDirty();
-		}
+        boolean flag = stack != null && stack.isItemEqual(this.furnaceItemStacks[index]) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks[index]);
+        this.furnaceItemStacks[index] = stack;
+
+        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
+        {
+            stack.stackSize = this.getInventoryStackLimit();
+        }
+
+        if (index == 0 && !flag)
+        {
+            this.totalCookTime = this.getCookTime(stack);
+            this.cookTime = 0;
+            this.markDirty();
+        }
 	}
 
     public int getCookTime(@Nullable ItemStack stack)
@@ -112,9 +102,9 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) 
+	public boolean isUseableByPlayer(EntityPlayer player) 
 	{
-		return this.world.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -142,8 +132,8 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
         }
         else
         {
-            ItemStack itemstack = this.furnaceItemStacks.get(index);
-            return isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && (itemstack == ItemStack.EMPTY || itemstack.getItem() != Items.BUCKET);
+            ItemStack itemstack = this.furnaceItemStacks[index];
+            return isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && (itemstack == null || itemstack.getItem() != Items.BUCKET);
         }
 	}
 
@@ -152,10 +142,9 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
         return getItemBurnTime(stack) > 0;
     }
     
-    @SuppressWarnings({ "deprecation" })
 	public static int getItemBurnTime(ItemStack fuel) 
 	{
-		if(fuel.isEmpty()) return 0;
+		if(fuel == null) return 0;
 		else 
 		{
 			Item item = fuel.getItem();
@@ -228,9 +217,9 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	@Override
 	public void clear() 
 	{
-        for (int i = 0; i < this.furnaceItemStacks.size(); ++i)
+        for (int i = 0; i < this.furnaceItemStacks.length; ++i)
         {
-            this.furnaceItemStacks.set(i, ItemStack.EMPTY);
+            this.furnaceItemStacks[i] = null;
         }
 	}
 
@@ -296,31 +285,63 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
-			super.readFromNBT(compound);
-			this.furnaceItemStacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
-			ItemStackHelper.loadAllItems(compound, this.furnaceItemStacks);
-			this.burnTime = compound.getInteger("BurnTime");
-			this.cookTime = compound.getInteger("CookTime");
-			this.totalCookTime = compound.getInteger("CookTimeTotal");
-			this.currentBurnTime = getItemBurnTime((ItemStack)this.furnaceItemStacks.get(2));
-			
-			if(compound.hasKey("CustomName", 8)) this.setCustomName(compound.getString("CustomName"));
-	}
-	
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        super.readFromNBT(compound);
+        NBTTagList nbttaglist = compound.getTagList("Items", 10);
+        this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+            int j = nbttagcompound.getByte("Slot");
+
+            if (j >= 0 && j < this.furnaceItemStacks.length)
+            {
+                this.furnaceItemStacks[j] = ItemStack.loadItemStackFromNBT(nbttagcompound);
+            }
+        }
+
+        this.burnTime = compound.getInteger("BurnTime");
+        this.cookTime = compound.getInteger("CookTime");
+        this.totalCookTime = compound.getInteger("CookTimeTotal");
+        this.currentBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+
+        if (compound.hasKey("CustomName", 8))
+        {
+            this.customName = compound.getString("CustomName");
+        }
+    }
+
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) 
-	{
-		super.writeToNBT(compound);
-		compound.setInteger("BurnTime", (short)this.burnTime);
-		compound.setInteger("CookTime", (short)this.cookTime);
-		compound.setInteger("CookTimeTotal", (short)this.totalCookTime);
-		ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
-		
-		if(this.hasCustomName()) compound.setString("CustomName", this.customName);
-		return compound;
-	}
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        super.writeToNBT(compound);
+        compound.setInteger("BurnTime", this.burnTime);
+        compound.setInteger("CookTime", this.cookTime);
+        compound.setInteger("CookTimeTotal", this.totalCookTime);
+        NBTTagList nbttaglist = new NBTTagList();
+
+        for (int i = 0; i < this.furnaceItemStacks.length; ++i)
+        {
+            if (this.furnaceItemStacks[i] != null)
+            {
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte)i);
+                this.furnaceItemStacks[i].writeToNBT(nbttagcompound);
+                nbttaglist.appendTag(nbttagcompound);
+            }
+        }
+
+        compound.setTag("Items", nbttaglist);
+
+        if (this.hasCustomName())
+        {
+            compound.setString("CustomName", this.customName);
+        }
+
+        return compound;
+    }
 	
     public boolean isBurning()
     {
@@ -344,26 +365,26 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             --this.burnTime;
         }
 
-        if (!this.world.isRemote)
+        if (!this.worldObj.isRemote)
         {
-        	//System.out.println(stop);
-            if (this.isBurning() || this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(0) != ItemStack.EMPTY && this.furnaceItemStacks.get(3) != ItemStack.EMPTY)
+            if (this.isBurning() || this.furnaceItemStacks[1] != null && this.furnaceItemStacks[0] != null && this.furnaceItemStacks[3] != null)
             {
                 if (!this.isBurning() && this.canSmelt())
                 {
-                    this.burnTime = getItemBurnTime(this.furnaceItemStacks.get(1));
+                    this.burnTime = getItemBurnTime(this.furnaceItemStacks[1]);
                     this.currentBurnTime = this.burnTime;
 
                     if (this.isBurning())
                     {
                         flag1 = true;
 
-                        if (this.furnaceItemStacks.get(1) != ItemStack.EMPTY)
+                        if (this.furnaceItemStacks[1] != null)
                         {
-                            this.furnaceItemStacks.get(1).setCount(this.furnaceItemStacks.get(1).getCount()-1);
-                            if (this.furnaceItemStacks.get(1).getCount() == 0)
+                            this.furnaceItemStacks[1].stackSize--;
+
+                            if (this.furnaceItemStacks[1].stackSize == 0)
                             {
-                                this.furnaceItemStacks.set(1, furnaceItemStacks.get(1).getItem().getContainerItem(furnaceItemStacks.get(1)));
+                                this.furnaceItemStacks[1] = furnaceItemStacks[1].getItem().getContainerItem(furnaceItemStacks[1]);
                             }
                         }
                     }
@@ -376,7 +397,7 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
                     if (this.cookTime == this.totalCookTime)
                     {
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime(this.furnaceItemStacks.get(0));
+                        this.totalCookTime = this.getCookTime(this.furnaceItemStacks[0]);
                         this.smeltItem();
                         flag1 = true;
                     }
@@ -388,12 +409,12 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             }
             else if (!this.isBurning() && this.cookTime > 0)
             {
-                this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
+                this.cookTime = MathHelper.clamp_int(this.cookTime - 2, 0, this.totalCookTime);
             }
             if (flag != this.isBurning())
             {
                 flag1 = true;
-            	DoubleFurnaceBlock.setState(this.isBurning(), this.world, this.pos);
+            	DoubleFurnaceBlock.setState(this.isBurning(), this.worldObj, this.pos);
             }
         }
         if (flag1)
@@ -404,24 +425,24 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
 	
 	private boolean canSmelt()
     {
-        if (this.furnaceItemStacks.get(0) == ItemStack.EMPTY || this.furnaceItemStacks.get(3).isEmpty())
+        if (this.furnaceItemStacks[0] == null || this.furnaceItemStacks[3] == null)
         {
             return false;
         }
         else
         {
-            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
-            if (itemstack == ItemStack.EMPTY) return false;
-            if (this.furnaceItemStacks.get(2) == ItemStack.EMPTY) return true;
-            if (!this.furnaceItemStacks.get(2).isItemEqual(itemstack)) return false;
-            int result = furnaceItemStacks.get(2).getCount() + itemstack.getCount();
-            return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks.get(2).getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
+            if (itemstack == null) return false;
+            if (this.furnaceItemStacks[2] == null) return true;
+            if (!this.furnaceItemStacks[2].isItemEqual(itemstack)) return false;
+            int result = furnaceItemStacks[2].stackSize + itemstack.stackSize;
+            return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
         }
     }
 	
     public void smeltItem()
     {
-    	if(this.furnaceItemStacks.get(3).isEmpty())
+    	if(this.furnaceItemStacks[3] == null)
     	{
     		stop = true;
     	}
@@ -431,12 +452,16 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
     	}
         if (this.canSmelt() && !stop)
         {
-            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
+            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
             count++;
             if(count == 4)
             {
-            	this.furnaceItemStacks.get(3).shrink(1);
-            	if(this.furnaceItemStacks.get(3).isEmpty())
+            	this.furnaceItemStacks[3].stackSize = this.furnaceItemStacks[3].stackSize-1;
+            	if(this.furnaceItemStacks[3].stackSize == 0)
+            	{
+            		this.furnaceItemStacks[3] = null;
+            	}
+            	if(this.furnaceItemStacks[3] == null)
             	{
             		stop = true;
             	}
@@ -446,27 +471,27 @@ public class DoubleFurnaceTileEntity extends TileEntityLockable implements ITick
             	}
             	count = 0;
             }
-            if(this.furnaceItemStacks.get(2) == ItemStack.EMPTY)
+            if (this.furnaceItemStacks[2] == null)
             {
-            	itemstack.setCount(itemstack.getCount()+1);
-                this.furnaceItemStacks.set(2, itemstack.copy());
-                itemstack.setCount(itemstack.getCount()-1);
+            	itemstack.stackSize = itemstack.stackSize+1;
+                this.furnaceItemStacks[2] = itemstack.copy();
+                itemstack.stackSize = itemstack.stackSize-1;
             }
-            else if(this.furnaceItemStacks.get(2).getItem() == itemstack.getItem())
+            else if (this.furnaceItemStacks[2].getItem() == itemstack.getItem())
             {
-                this.furnaceItemStacks.get(2).setCount(this.furnaceItemStacks.get(2).getCount() + itemstack.getCount()*2); // Forge BugFix: Results may have multiple items
-            }
-
-            if (this.furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks.get(0).getMetadata() == 1 && this.furnaceItemStacks.get(1) != ItemStack.EMPTY && this.furnaceItemStacks.get(1).getItem() == Items.BUCKET)
-            {
-                this.furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
+                this.furnaceItemStacks[2].stackSize = this.furnaceItemStacks[2].stackSize + itemstack.stackSize*2; // Forge BugFix: Results may have multiple items
             }
 
-            this.furnaceItemStacks.get(0).setCount(this.furnaceItemStacks.get(0).getCount()-1);
-
-            if (this.furnaceItemStacks.get(0).getCount() <= 0)
+            if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks[0].getMetadata() == 1 && this.furnaceItemStacks[1] != null && this.furnaceItemStacks[1].getItem() == Items.BUCKET)
             {
-                this.furnaceItemStacks.set(0, ItemStack.EMPTY);
+                this.furnaceItemStacks[1] = new ItemStack(Items.WATER_BUCKET);
+            }
+
+            this.furnaceItemStacks[0].stackSize = this.furnaceItemStacks[0].stackSize-1;
+
+            if (this.furnaceItemStacks[0].stackSize <= 0)
+            {
+                this.furnaceItemStacks[0] = null;
             }
         }
     }

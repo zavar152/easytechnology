@@ -11,10 +11,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import zavar30.easytechnology.proxy.CommonProxy;
 
-@Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.10.2]")
+@Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.10.2]")//, acceptableRemoteVersions = "[0.5.2]")
 public class EasyTechnology
 {
-  @Instance(Constants.MODID)
+  @Instance(ETConstants.MODID)
   public static EasyTechnology instance;
 	
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
@@ -35,6 +35,7 @@ public class EasyTechnology
   {
     proxy.init(event);
     ETRecipes.load();
+    ETGUI.load();
   }
   
   @Mod.EventHandler
