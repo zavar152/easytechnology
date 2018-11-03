@@ -32,6 +32,7 @@ public class BoerItem extends ItemTool
 	private Material[] m = {Material.ROCK, Material.ANVIL, Material.CORAL, Material.GROUND, Material.CLAY, Material.GRASS, Material.IRON, Material.SAND, Material.SNOW, Material.PISTON, Material.CIRCUITS, Material.CRAFTED_SNOW, Material.DRAGON_EGG};
 	private float e;
 	private ITextComponent tct = new TextComponentTranslation("boer.info.text", "dank");
+	private ITextComponent tct2 = new TextComponentTranslation("boer.reload.text", "dank");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BoerItem(float attackDamage, float attackSpeed, ToolMaterial material, Set effectiveBlocks, String name)
@@ -60,7 +61,7 @@ public class BoerItem extends ItemTool
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) 
 	{
-		tooltip.add(tct.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage());
+		tooltip.add(tct.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage() + " " + tct2.getFormattedText());
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 	
@@ -71,14 +72,14 @@ public class BoerItem extends ItemTool
 		for (int i = 0; i < playerIn.inventory.getSizeInventory(); i++)
 		{
 		  ItemStack coal = playerIn.inventory.getStackInSlot(i);
-		  if ((isCoal(coal)) && (coal.getCount() >= 32) && (boer.getItemDamage() == boer.getMaxDamage() - 1))
+		  if ((isCoal(coal)) && (coal.getCount() == 64) && (boer.getItemDamage() == boer.getMaxDamage() - 1))
 		  {
-		    coal.setCount(coal.getCount() - 32);
+		    //coal.setCount(coal.getCount() - 32);
 		    boer.setItemDamage(0);
-		    if(coal.getCount() == 0)
-		    {
+		    //if(coal.getCount() == 0)
+		    //{
 		    	playerIn.inventory.deleteStack(coal);
-		    }
+		    //}
 		 }
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -115,7 +116,7 @@ public class BoerItem extends ItemTool
 	@Override
 	public float getDestroySpeed(ItemStack stack, IBlockState state) 
 	{
-	  for(int k = 0; k <= 3; k++)
+	  for(int k = 0; k < m.length; k++)
 	  {
 		if(state.getMaterial() == m[k] | state.getBlock().isToolEffective("shovel", state) | state.getBlock().isToolEffective("pickaxe", state))
 		{
@@ -124,7 +125,7 @@ public class BoerItem extends ItemTool
 		}
 	  return 1.0F;
 	}
-
+	
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
 	{
