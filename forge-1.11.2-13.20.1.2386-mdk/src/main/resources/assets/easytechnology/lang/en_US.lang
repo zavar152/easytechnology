@@ -30,3 +30,4 @@ item.oreryllium_ingot.name=Oreryllium ingot
 item.machine_controller.name=Machine controller
 tile.double_furnace.name=Double furnace
 container.double_furnace=Double furnace
+double_furnace.use.text=How to use  

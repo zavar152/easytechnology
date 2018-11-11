@@ -41,10 +41,10 @@ public class ETItems
   public static BoerylliumHoeItem boeryllium_hoe;
   public static Item boeryllium_helmet, boeryllium_chestplate, boeryllium_leggings, boeryllium_boots;
   private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {});
-  private static ToolMaterial boerToolMaterial = EnumHelper.addToolMaterial("BOER", 3, 1000, 15.0F, 0.0F, 0);
-  private static ToolMaterial boerylliumToolMaterial = EnumHelper.addToolMaterial("boeryllium", 3, 500, 10.0F, 7.0F, 5).setRepairItem(new ItemStack(ETItems.boeryllium_ingot));
+  private static ToolMaterial boerToolMaterial = EnumHelper.addToolMaterial("BOER", 3, 500, 15.0F, 0.0F, 0);
+  private static ToolMaterial boerylliumToolMaterial = EnumHelper.addToolMaterial("boeryllium", 3, 1000, 10.0F, 7.0F, 5).setRepairItem(new ItemStack(ETItems.boeryllium_ingot));
   private static ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("boeryllium_armor", 
-		  ETConstants.MODID + ":boeryllium_armor", 9, new int[]{2, 4, 6, 3}, 7, 
+		  ETConstants.MODID + ":boeryllium_armor", 900, new int[]{2, 4, 6, 3}, 7, 
 		  SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
   public static SimpleItem oreryllium_ingot;
   public static SimpleItem oreryllium_ingot_raw;

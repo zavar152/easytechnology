@@ -26,7 +26,7 @@ public class ETGenerator implements IWorldGenerator
 	private void generateOverworld(Random random, int chunkX, int chunkY, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) 
 	{
 		generateOre(ETBlocks.boery_ore.getDefaultState(), world, random, chunkX * 16, chunkY * 16, 16, 64, 4 + random.nextInt(4), 8);
-		generateOre(ETBlocks.orery_ore.getDefaultState(), world, random, chunkX * 16, chunkY * 16, 16, 64, 4 + random.nextInt(4), 8);
+		generateOre(ETBlocks.orery_ore.getDefaultState(), world, random, chunkX * 16, chunkY * 16, 16, 64, 4 + random.nextInt(6), 20);
 	}
 
 	private void generateOre(IBlockState ore, World world, Random random, int x, int z, int minY, int maxY, int size, int chances) 

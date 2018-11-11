@@ -30,3 +30,4 @@ item.oreryllium_ingot.name=Слиток рудиллия
 item.machine_controller.name=Контроллер механизма
 tile.double_furnace.name=Двойная печь
 container.double_furnace=Двойная печь
+double_furnace.use.text=Туториал
