@@ -32,6 +32,7 @@ public class BoerItem extends ItemTool
 	private Material[] m = {Material.ROCK, Material.ANVIL, Material.CORAL, Material.GROUND, Material.CLAY, Material.GRASS, Material.IRON, Material.SAND, Material.SNOW, Material.PISTON, Material.CIRCUITS, Material.CRAFTED_SNOW, Material.DRAGON_EGG};
 	private float e;
 	private ITextComponent tct = new TextComponentTranslation("boer.info.text", "dank");
+	private ITextComponent tct2 = new TextComponentTranslation("boer.reload.text", "dank"); 
 	
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public BoerItem(float attackDamage, float attackSpeed, ToolMaterial material, Set effectiveBlocks, String name)
@@ -60,7 +61,7 @@ public BoerItem setCreativeTab(CreativeTabs tab)
 @Override
 public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
 {
-	tooltip.add(tct.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage());
+	tooltip.add(tct.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage() + " " + tct2.getFormattedText());
   super.addInformation(stack, playerIn, tooltip, advanced);
 }
 
@@ -70,14 +71,11 @@ public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, 
   for (int i = 0; i < playerIn.inventory.getSizeInventory(); i++)
   {
     ItemStack itemstack = playerIn.inventory.getStackInSlot(i);
-    if ((isCoal(itemstack)) && (itemstack.stackSize >= 32) && (stack.getItemDamage() == stack.getMaxDamage() - 1))
+    if ((isCoal(itemstack)) && (itemstack.stackSize == 64) && (stack.getItemDamage() == stack.getMaxDamage() - 1))
     {
-    	itemstack.stackSize = itemstack.stackSize - 32;
+    	itemstack.stackSize = itemstack.stackSize - 64;
     	stack.setItemDamage(0);
-    	if(itemstack.stackSize == 0)
-    	{
-    		playerIn.inventory.deleteStack(itemstack);
-    	}
+    	playerIn.inventory.deleteStack(itemstack);
     }
   }
   return super.onItemRightClick(stack, worldIn, playerIn, hand);
@@ -114,7 +112,7 @@ protected boolean isCoal(@Nullable ItemStack stack)
 @Override
 public float getStrVsBlock(ItemStack stack, IBlockState state) 
 {
-  for(int k = 0; k <= 3; k++)
+  for(int k = 0; k < m.length; k++)
   {
 	if(state.getMaterial() == m[k] | state.getBlock().isToolEffective("shovel", state) | state.getBlock().isToolEffective("pickaxe", state))
 	{

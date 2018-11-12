@@ -1,9 +1,15 @@
 package zavar30.easytechnology.blocks.machines.double_furnace;
 
+import java.io.IOException;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import zavar30.easytechnology.ETConstants;
@@ -15,6 +21,7 @@ public class GUIDoubleFurnace extends GuiContainer
     /** The player inventory bound to this GUI. */
     private final InventoryPlayer playerInventory;
     private final DoubleFurnaceTileEntity tileFurnace;
+    private ITextComponent tct = new TextComponentTranslation("double_furnace.use.text", "dank");
 
     public GUIDoubleFurnace(InventoryPlayer playerInv, DoubleFurnaceTileEntity furnaceInv)
     {
@@ -23,6 +30,24 @@ public class GUIDoubleFurnace extends GuiContainer
         this.tileFurnace = furnaceInv;
     }
 
+    @Override
+    public void initGui() {
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
+        
+        this.buttonList.add(new GuiButton(0, i + 99, j + 61, 50, 20, tct.getFormattedText()));
+    	super.initGui();
+    }
+    
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+    	if(button.id == 0)
+    	{
+    		Minecraft.getMinecraft().thePlayer.sendChatMessage("Put some oreryllium ingots in the red slot for working.");
+    	}
+    	super.actionPerformed(button);
+    }
+    
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
