@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import zavar30.easytechnology.proxy.CommonProxy;
 
-@Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.12.2]")//, acceptableRemoteVersions = "[0.6.5]")
+@Mod(modid="easytechnology", useMetadata=true, acceptedMinecraftVersions="[1.12.2]")
 public class EasyTechnology
 {
   @Instance(ETConstants.MODID)
@@ -20,7 +20,7 @@ public class EasyTechnology
   @SidedProxy(clientSide="zavar30.easytechnology.proxy.ClientProxy", serverSide="zavar30.easytechnology.proxy.CommonProxy")
   public static CommonProxy proxy;
  
-@Mod.EventHandler 
+  @Mod.EventHandler 
   public void preInit(FMLPreInitializationEvent event)
   {
     proxy.preInit(event);

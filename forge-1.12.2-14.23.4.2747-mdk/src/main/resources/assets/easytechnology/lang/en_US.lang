@@ -32,3 +32,5 @@ item.machine_controller.name=Machine controller
 tile.double_furnace.name=Double furnace
 container.double_furnace=Double furnace
 double_furnace.use.text=How to use
+double_furnace.tutorial.text=Put some oreryllium ingots in the red slot
+boer.need.text=Reload the boer

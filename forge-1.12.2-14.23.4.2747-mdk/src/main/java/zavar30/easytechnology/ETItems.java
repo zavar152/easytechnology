@@ -24,16 +24,9 @@ import zavar30.easytechnology.items.SimpleItem;
 
 public class ETItems
 {
-  public static SimpleItem boer_case;
   public static BoerItem boer;
-  public static SimpleItem boer_main;
-  public static SimpleItem boeryllium_ingot;
-  public static SimpleItem boeryllium_ingot_raw;
-  public static SimpleItem boer_controller;
-  public static SeedItem seed;
-  public static SeedItem seed_golden;
-  public static SeedItem pack;
-  public static SeedItem golden_pack;
+  public static SimpleItem boer_main, boer_case, boeryllium_ingot, boeryllium_ingot_raw, boer_controller, oreryllium_ingot, oreryllium_ingot_raw, machine_controller;
+  public static SeedItem seed, seed_golden, pack, golden_pack;
   public static BoerylliumPickaxeItem boeryllium_pickaxe;
   public static BoerylliumSwordItem boeryllium_sword;
   public static BoerylliumSpadeItem boeryllium_spade; 
@@ -46,19 +39,12 @@ public class ETItems
   private static ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial("boeryllium_armor", 
 		  ETConstants.MODID + ":boeryllium_armor", 900, new int[]{2, 4, 6, 3}, 7, 
 		  SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F).setRepairItem(new ItemStack(Item.getItemFromBlock(ETBlocks.boery_block)));
-  public static SimpleItem oreryllium_ingot;
-  public static SimpleItem oreryllium_ingot_raw;
-  public static SimpleItem machine_controller;
-  
-  public static final Item[] ITEMS = {boeryllium_ingot,boeryllium_ingot_raw,oreryllium_ingot,oreryllium_ingot_raw,
-		  boer,boer_controller,boer_main,boer_case,machine_controller,boeryllium_pickaxe,boeryllium_sword,boeryllium_spade,
-		  boeryllium_axe,boeryllium_hoe,boeryllium_boots,boeryllium_leggings,boeryllium_chestplate,boeryllium_helmet,
-		  seed,seed_golden,pack,golden_pack};
   
   public static void load()
   {
 	  boer_main = new SimpleItem("boer_main").setCreativeTab(EasyTechnology.tab);
 	  boer_case = new SimpleItem("boer_case").setCreativeTab(EasyTechnology.tab);
+	  
 	  boer = new BoerItem(-1.0F, -1.0F, boerToolMaterial, EFFECTIVE_ON, "boer").setCreativeTab(EasyTechnology.tab);
 	  boer_controller = new SimpleItem("boer_controller").setCreativeTab(EasyTechnology.tab);
 	  

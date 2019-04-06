@@ -188,14 +188,10 @@ public class DoubleFurnaceBlock extends Block implements ITileEntityProvider
 		if(active) 
 		{
 			worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
-			//worldIn.setBlockState(pos, ETBlocks.lit_double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
-			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
 		}
-		else //
+		else 
 		{
 			worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
-			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)), 3);
-			//worldIn.setBlockState(pos, ETBlocks.double_furnace.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
 		}
 	if(tileentity != null) 
 		{

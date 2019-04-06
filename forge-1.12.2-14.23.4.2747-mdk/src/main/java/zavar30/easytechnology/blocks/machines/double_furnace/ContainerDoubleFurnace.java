@@ -53,9 +53,6 @@ public class ContainerDoubleFurnace extends Container
         listener.sendAllWindowProperties(this, this.tileFurnace);
     }
 
-    /**
-     * Looks for changes made in the container, sends them to every listener.
-     */
 	@Override
 	public void detectAndSendChanges() 
 	{
@@ -84,18 +81,12 @@ public class ContainerDoubleFurnace extends Container
         this.tileFurnace.setField(id, data);
     }
 
-    /**
-     * Determines whether supplied player can use this container
-     */
     @Override
     public boolean canInteractWith(EntityPlayer playerIn)
     {
         return this.tileFurnace.isUsableByPlayer(playerIn);
     }
 
-    /**
-     * Take a stack from the specified inventory slot.
-     */
     @Nullable
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)

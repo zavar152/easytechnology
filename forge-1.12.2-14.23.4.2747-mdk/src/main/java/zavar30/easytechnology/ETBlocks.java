@@ -1,6 +1,5 @@
 package zavar30.easytechnology;
 
-import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import zavar30.easytechnology.blocks.BoerylliumBlock;
 import zavar30.easytechnology.blocks.BoerylliumOreBlock;
@@ -17,9 +16,6 @@ public class ETBlocks
 	public static DoubleFurnaceBlock double_furnace;
 	public static DoubleFurnaceBlock lit_double_furnace;
 	public static OrerylliumOreBlock orery_ore;
-	
-	public static final Item[] BLOCKS = {Item.getItemFromBlock(boery_ore),Item.getItemFromBlock(orery_ore),
-			Item.getItemFromBlock(boery_block),Item.getItemFromBlock(seed_block),Item.getItemFromBlock(double_furnace)};
 	
 	public static void load()
 	{

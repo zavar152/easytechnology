@@ -18,10 +18,10 @@ import zavar30.easytechnology.ETConstants;
 public class GUIDoubleFurnace extends GuiContainer
 {
     private static final ResourceLocation FURNACE_GUI_TEXTURES = new ResourceLocation(ETConstants.MODID + ":textures/gui/double_furnace.png");
-    /** The player inventory bound to this GUI. */
     private final InventoryPlayer playerInventory;
     private final DoubleFurnaceTileEntity tileFurnace;
 	private ITextComponent tct = new TextComponentTranslation("double_furnace.use.text", "dank");
+	private ITextComponent send = new TextComponentTranslation("double_furnace.tutorial.text", "dank");
 
     public GUIDoubleFurnace(InventoryPlayer playerInv, DoubleFurnaceTileEntity furnaceInv)
     {
@@ -35,7 +35,7 @@ public class GUIDoubleFurnace extends GuiContainer
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         
-        this.buttonList.add(new GuiButton(0, i + 99, j + 61, 50, 20, tct.getFormattedText()));
+        this.buttonList.add(new GuiButton(0, i + 99, j + 61, 70, 20, tct.getFormattedText()));
     	super.initGui();
     }
     
@@ -43,15 +43,14 @@ public class GUIDoubleFurnace extends GuiContainer
     protected void actionPerformed(GuiButton button) throws IOException {
     	if(button.id == 0)
     	{
-    		Minecraft.getMinecraft().player.sendChatMessage("Put some oreryllium ingots in the red slot for working.");
+    		if(Minecraft.getMinecraft().world.isRemote) {
+
+				Minecraft.getMinecraft().player.sendMessage(send);
+    		}
     	}
     	super.actionPerformed(button);
     }
-    
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
-    
+  
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
@@ -66,9 +65,6 @@ public class GUIDoubleFurnace extends GuiContainer
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
-    /**
-     * Draws the background layer of this container (behind the items).
-     */
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -76,21 +72,19 @@ public class GUIDoubleFurnace extends GuiContainer
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
-
+        
         if (DoubleFurnaceTileEntity.isBurning(this.tileFurnace))
         {
             int k = this.getBurnLeftScaled(13);
             this.drawTexturedModalRect(i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
         }
-
+        
         int l = this.getCookProgressScaled(24);
         this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
     }
 
     private int getCookProgressScaled(int pixels)
     {
-    	//System.out.println("cookTime - "+this.tileFurnace.getField(2));
-    	//System.out.println("totalCookTime - "+this.tileFurnace.getField(3));
         int i = this.tileFurnace.getField(2);
         int j = this.tileFurnace.getField(3);
         return j != 0 && i != 0 ? i * pixels / j : 0;
@@ -98,15 +92,11 @@ public class GUIDoubleFurnace extends GuiContainer
 
     private int getBurnLeftScaled(int pixels)
     {
-    	//System.out.println("currentBurnTime - "+this.tileFurnace.getField(1));
         int i = this.tileFurnace.getField(1);
-
         if (i <= 0)
         {
             i = 200;
         }
-
-        //System.out.println("burnTime - "+this.tileFurnace.getField(0));
         if(this.tileFurnace.getField(0) <= 0)
         {
         	return 0;

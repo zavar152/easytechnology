@@ -7,7 +7,6 @@ import zavar30.easytechnology.ETItems;
 
 public class OrerylliumSlot  extends Slot
 {
-
 	public OrerylliumSlot(IInventory inventoryIn, int index, int xPosition, int yPosition)
 	{
 		super(inventoryIn, index, xPosition, yPosition);
