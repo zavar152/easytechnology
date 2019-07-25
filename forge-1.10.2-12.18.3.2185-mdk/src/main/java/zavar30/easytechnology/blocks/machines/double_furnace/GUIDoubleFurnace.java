@@ -21,7 +21,8 @@ public class GUIDoubleFurnace extends GuiContainer
     /** The player inventory bound to this GUI. */
     private final InventoryPlayer playerInventory;
     private final DoubleFurnaceTileEntity tileFurnace;
-    private ITextComponent tct = new TextComponentTranslation("double_furnace.use.text", "dank");
+	private ITextComponent tct = new TextComponentTranslation("double_furnace.use.text", "dank");
+	private ITextComponent send = new TextComponentTranslation("double_furnace.tutorial.text", "dank");
 
     public GUIDoubleFurnace(InventoryPlayer playerInv, DoubleFurnaceTileEntity furnaceInv)
     {
@@ -35,7 +36,7 @@ public class GUIDoubleFurnace extends GuiContainer
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         
-        this.buttonList.add(new GuiButton(0, i + 99, j + 61, 50, 20, tct.getFormattedText()));
+        this.buttonList.add(new GuiButton(0, i + 99, j + 61, 70, 20, tct.getFormattedText()));
     	super.initGui();
     }
     
@@ -43,7 +44,10 @@ public class GUIDoubleFurnace extends GuiContainer
     protected void actionPerformed(GuiButton button) throws IOException {
     	if(button.id == 0)
     	{
-    		Minecraft.getMinecraft().thePlayer.sendChatMessage("Put some oreryllium ingots in the red slot for working.");
+    		if(Minecraft.getMinecraft().theWorld.isRemote) {
+
+				Minecraft.getMinecraft().thePlayer.sendChatMessage(send.getUnformattedText());
+    		}
     	}
     	super.actionPerformed(button);
     }

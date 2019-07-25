@@ -32,3 +32,5 @@ item.machine_controller.name=Контроллер механизма
 tile.double_furnace.name=Двойная печь
 container.double_furnace=Двойная печь
 double_furnace.use.text=Туториал
+double_furnace.tutorial.text=Положите рудиллий в красный слот
+boer.need.text=Перезарядите бур

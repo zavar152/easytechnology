@@ -33,10 +33,9 @@ public class BoerItem extends ItemTool
 			Material.CLAY, Material.GRASS, Material.IRON, Material.SAND, Material.SNOW, Material.PISTON, 
 			Material.CRAFTED_SNOW, Material.DRAGON_EGG};
 	private float e;
-	private boolean isReloaded = true;
 	private ITextComponent info_text = new TextComponentTranslation("boer.info.text", "dank");
 	private ITextComponent reload_text = new TextComponentTranslation("boer.reload.text", "dank");
-	private ITextComponent need_text = new TextComponentTranslation("boer.need.text", "dank");
+	//private ITextComponent need_text = new TextComponentTranslation("boer.need.text", "dank");
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BoerItem(float attackDamage, float attackSpeed, ToolMaterial material, Set effectiveBlocks, String name)
@@ -76,22 +75,23 @@ public class BoerItem extends ItemTool
 		for (int i = 0; i < playerIn.inventory.getSizeInventory(); i++)
 		{
 		  ItemStack coal = playerIn.inventory.getStackInSlot(i);
-		  if(isCoal(coal) && (coal.getCount() != 64))
+		  
+		  if(isCoal(coal)) //8 ед. за 1 уголь
 		  {
-			  int u = coal.getCount() * (boer.getMaxDamage() / 64);
-			  if(boer.getItemDamage() - u <= boer.getMaxDamage())
+			  if(boer.getItemDamage() != 0)
 			  {
-				  System.out.println(boer.getItemDamage() - u);
-				  boer.setItemDamage(boer.getItemDamage() - u);
-				  playerIn.inventory.deleteStack(coal);
+				 int y = 64 - (boer.getMaxDamage() - boer.getItemDamage())/8;
+				 if(coal.getCount() >= y)
+				 {
+					coal.setCount(coal.getCount() - y);
+				 	boer.setItemDamage(0);
+					if(coal.getCount() == 0)
+					{
+						playerIn.inventory.deleteStack(coal);
+					}
+			  	 }
 			  }
 		  }
-		  else if ((isCoal(coal)) && (coal.getCount() == 64) && (boer.getItemDamage() == boer.getMaxDamage() - 1))
-		  {
-		    boer.setItemDamage(0);
-		    playerIn.inventory.deleteStack(coal);
-		    isReloaded = true;
-		 }
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
@@ -111,7 +111,6 @@ public class BoerItem extends ItemTool
 		    if (stack.getItemDamage() >= stack.getMaxDamage() - 1) 
 		    {
 		      this.efficiency = -1.0F;
-		      isReloaded = false;
 		    } 
 		    else 
 		    {

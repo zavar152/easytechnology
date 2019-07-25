@@ -29,10 +29,12 @@ import zavar30.easytechnology.EasyTechnology;
 public class BoerItem extends ItemTool
 {
 
-	private Material[] m = {Material.ROCK, Material.ANVIL, Material.CORAL, Material.GROUND, Material.CLAY, Material.GRASS, Material.IRON, Material.SAND, Material.SNOW, Material.PISTON, Material.CIRCUITS, Material.CRAFTED_SNOW, Material.DRAGON_EGG};
+	private Material[] m = {Material.ROCK, Material.ANVIL, Material.CORAL, Material.GROUND, Material.CLAY,
+			Material.GRASS, Material.IRON, Material.SAND, Material.SNOW, Material.PISTON, Material.CIRCUITS, 
+			Material.CRAFTED_SNOW, Material.DRAGON_EGG};
 	private float e;
-	private ITextComponent tct = new TextComponentTranslation("boer.info.text", "dank");
-	private ITextComponent tct2 = new TextComponentTranslation("boer.reload.text", "dank"); 
+	private ITextComponent info_text = new TextComponentTranslation("boer.info.text", "dank");
+	private ITextComponent reload_text = new TextComponentTranslation("boer.reload.text", "dank"); 
 	
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public BoerItem(float attackDamage, float attackSpeed, ToolMaterial material, Set effectiveBlocks, String name)
@@ -61,24 +63,36 @@ public BoerItem setCreativeTab(CreativeTabs tab)
 @Override
 public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
 {
-	tooltip.add(tct.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage() + " " + tct2.getFormattedText());
+	tooltip.add(info_text.getFormattedText() + (stack.getMaxDamage() - stack.getItemDamage()) + "/" + stack.getMaxDamage() + " " + reload_text.getFormattedText());
   super.addInformation(stack, playerIn, tooltip, advanced);
 }
 
 @Override
 public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
 {
-  for (int i = 0; i < playerIn.inventory.getSizeInventory(); i++)
-  {
-    ItemStack itemstack = playerIn.inventory.getStackInSlot(i);
-    if ((isCoal(itemstack)) && (itemstack.stackSize == 64) && (stack.getItemDamage() == stack.getMaxDamage() - 1))
-    {
-    	itemstack.stackSize = itemstack.stackSize - 64;
-    	stack.setItemDamage(0);
-    	playerIn.inventory.deleteStack(itemstack);
-    }
-  }
-  return super.onItemRightClick(stack, worldIn, playerIn, hand);
+	ItemStack boer = playerIn.inventory.getCurrentItem();
+	for (int i = 0; i < playerIn.inventory.getSizeInventory(); i++)
+	{
+	  ItemStack coal = playerIn.inventory.getStackInSlot(i);
+	  
+	  if(isCoal(coal)) //8 ед. за 1 уголь
+	  {
+		  if(boer.getItemDamage() != 0)
+		  {
+			 int y = 64 - (boer.getMaxDamage() - boer.getItemDamage())/8;
+			 if(coal.stackSize >= y)
+			 {
+				coal.stackSize = (coal.stackSize - y);
+				boer.setItemDamage(0);
+				if(coal.stackSize == 0)
+				{
+					playerIn.inventory.deleteStack(coal);
+				}
+		  	 }
+		  }
+	  }
+	}
+	return super.onItemRightClick(stack, worldIn, playerIn, hand);
 }
 
 @Override
@@ -119,14 +133,14 @@ public float getStrVsBlock(ItemStack stack, IBlockState state)
 		return this.efficiencyOnProperMaterial;
 	}
 	}
-  return 1.0F;
+  return -1.0F;
 }
 
 @Override
 public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
 {
   if (!world.isRemote) {
-    if(stack.getStrVsBlock(state) != 1.0F)
+    if(stack.getStrVsBlock(state) != -1.0F)
     {
       float pitch = entityLiving.rotationPitch;
       EnumFacing o = entityLiving.getHorizontalFacing();
